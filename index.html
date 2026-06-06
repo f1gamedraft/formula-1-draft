@@ -141,9 +141,50 @@
 
     <script>
         let teams = [
-            // --- LE LEGGENDE STORICHE ---
-            { name: "McLaren 1988", d1: "A. Senna", d2: "A. Prost", stats: { pilota1: 99, pilota2: 98, strategia: 90, aerodinamica: 95, motore: 97 } },
-            { name: "Williams 1992", d1: "N. Mansell", d2: "R. Patrese", stats: { pilota1: 95, pilota2: 85, strategia: 90, aerodinamica: 99, motore: 92 } },
+            // --- GLI ALBORI (ANNI '50 e '60) ---
+            { name: "Alfa Romeo 1950", d1: "N. Farina", d2: "J. Fangio", stats: { pilota1: 94, pilota2: 98, strategia: 80, aerodinamica: 85, motore: 96 } },
+            { name: "Mercedes W196 1954", d1: "J. Fangio", d2: "S. Moss", stats: { pilota1: 99, pilota2: 95, strategia: 90, aerodinamica: 95, motore: 99 } },
+            { name: "Maserati 250F 1957", d1: "J. Fangio", d2: "J. Behra", stats: { pilota1: 99, pilota2: 85, strategia: 80, aerodinamica: 88, motore: 94 } },
+            { name: "Lotus 25 1963", d1: "J. Clark", d2: "T. Taylor", stats: { pilota1: 99, pilota2: 75, strategia: 85, aerodinamica: 98, motore: 90 } },
+            { name: "Brabham BT19 1966", d1: "J. Brabham", d2: "D. Hulme", stats: { pilota1: 95, pilota2: 92, strategia: 94, aerodinamica: 90, motore: 92 } },
+
+            // --- L'ERA DELL'AERODINAMICA (ANNI '70) ---
+            { name: "Lotus 72 1970", d1: "J. Rindt", d2: "E. Fittipaldi", stats: { pilota1: 98, pilota2: 92, strategia: 88, aerodinamica: 97, motore: 90 } },
+            { name: "Tyrrell 003 1971", d1: "J. Stewart", d2: "F. Cevert", stats: { pilota1: 99, pilota2: 88, strategia: 92, aerodinamica: 95, motore: 94 } },
+            { name: "Ferrari 312T 1975", d1: "N. Lauda", d2: "C. Regazzoni", stats: { pilota1: 98, pilota2: 88, strategia: 94, aerodinamica: 96, motore: 97 } },
+            { name: "McLaren M23 1976", d1: "J. Hunt", d2: "J. Mass", stats: { pilota1: 95, pilota2: 82, strategia: 88, aerodinamica: 94, motore: 95 } },
+            { name: "Lotus 79 1978", d1: "M. Andretti", d2: "R. Peterson", stats: { pilota1: 96, pilota2: 95, strategia: 90, aerodinamica: 99, motore: 92 } }, // L'effetto suolo!
+            { name: "Renault RS01 1979", d1: "J. Jabouille", d2: "R. Arnoux", stats: { pilota1: 85, pilota2: 88, strategia: 75, aerodinamica: 85, motore: 60 } }, // "La teiera gialla" super turbo ma fragile
+
+            // --- I TURBO E LE LEGGENDE (ANNI '80) ---
+            { name: "Williams FW07 1980", d1: "A. Jones", d2: "C. Reutemann", stats: { pilota1: 94, pilota2: 92, strategia: 90, aerodinamica: 96, motore: 94 } },
+            { name: "Brabham BT52 1983", d1: "N. Piquet", d2: "R. Patrese", stats: { pilota1: 96, pilota2: 88, strategia: 92, aerodinamica: 95, motore: 98 } }, // Motore BMW da 1000cv in qualifica
+            { name: "McLaren MP4/2 1984", d1: "N. Lauda", d2: "A. Prost", stats: { pilota1: 98, pilota2: 97, strategia: 96, aerodinamica: 96, motore: 95 } },
+            { name: "Lotus 97T 1985", d1: "A. Senna", d2: "E. De Angelis", stats: { pilota1: 98, pilota2: 88, strategia: 85, aerodinamica: 94, motore: 90 } },
+            { name: "Williams FW11 1986", d1: "N. Mansell", d2: "N. Piquet", stats: { pilota1: 96, pilota2: 96, strategia: 84, aerodinamica: 95, motore: 99 } }, // Guerra in casa che costò il mondiale
+            { name: "McLaren MP4/4 1988", d1: "A. Senna", d2: "A. Prost", stats: { pilota1: 99, pilota2: 99, strategia: 94, aerodinamica: 98, motore: 98 } }, // 15 vittorie su 16
+            { name: "Ferrari 640 1989", d1: "N. Mansell", d2: "G. Berger", stats: { pilota1: 95, pilota2: 92, strategia: 80, aerodinamica: 96, motore: 55 } }, // Velocissima ma il cambio rompeva sempre
+
+            // --- L'ELETTRONICA E LE LOTTE EPICHE (ANNI '90) ---
+            { name: "McLaren MP4/5B 1990", d1: "A. Senna", d2: "G. Berger", stats: { pilota1: 99, pilota2: 90, strategia: 92, aerodinamica: 95, motore: 97 } },
+            { name: "Ferrari 641 1990", d1: "A. Prost", d2: "N. Mansell", stats: { pilota1: 98, pilota2: 94, strategia: 88, aerodinamica: 96, motore: 95 } },
+            { name: "Jordan 191 1991", d1: "M. Schumacher", d2: "A. De Cesaris", stats: { pilota1: 90, pilota2: 82, strategia: 85, aerodinamica: 92, motore: 84 } }, // Il debutto di Schumi, auto bellissima
+            { name: "Williams FW14B 1992", d1: "N. Mansell", d2: "R. Patrese", stats: { pilota1: 96, pilota2: 86, strategia: 94, aerodinamica: 99, motore: 95 } }, // Le sospensioni attive!
+            { name: "Benetton B192 1992", d1: "M. Schumacher", d2: "M. Brundle", stats: { pilota1: 95, pilota2: 84, strategia: 92, aerodinamica: 94, motore: 88 } },
+            { name: "McLaren MP4/8 1993", d1: "A. Senna", d2: "M. Andretti", stats: { pilota1: 99, pilota2: 70, strategia: 90, aerodinamica: 95, motore: 85 } },
+            { name: "Williams FW15C 1993", d1: "A. Prost", d2: "D. Hill", stats: { pilota1: 97, pilota2: 88, strategia: 95, aerodinamica: 99, motore: 96 } },
+            { name: "Benetton B194 1994", d1: "M. Schumacher", d2: "J. Verstappen", stats: { pilota1: 98, pilota2: 75, strategia: 95, aerodinamica: 96, motore: 92 } },
+            { name: "Ferrari 412 T2 1995", d1: "J. Alesi", d2: "G. Berger", stats: { pilota1: 90, pilota2: 88, strategia: 80, aerodinamica: 88, motore: 94 } }, // L'ultimo V12
+            { name: "Williams FW18 1996", d1: "D. Hill", d2: "J. Villeneuve", stats: { pilota1: 92, pilota2: 94, strategia: 92, aerodinamica: 98, motore: 96 } },
+            { name: "Ferrari F310 1996", d1: "M. Schumacher", d2: "E. Irvine", stats: { pilota1: 98, pilota2: 80, strategia: 85, aerodinamica: 75, motore: 85 } }, // Schumi fa miracoli con un catorcio
+            { name: "Williams FW19 1997", d1: "J. Villeneuve", d2: "H. Frentzen", stats: { pilota1: 95, pilota2: 85, strategia: 90, aerodinamica: 96, motore: 95 } },
+            { name: "McLaren MP4/13 1998", d1: "M. Häkkinen", d2: "D. Coulthard", stats: { pilota1: 97, pilota2: 90, strategia: 92, aerodinamica: 98, motore: 98 } },
+            { name: "Jordan 199 1999", d1: "H. Frentzen", d2: "D. Hill", stats: { pilota1: 94, pilota2: 82, strategia: 95, aerodinamica: 92, motore: 88 } }, // Outsider pazzesca!
+
+            // --- I PEGGIORI DISASTRI STORICI (MALUS ASSOLUTI) ---
+            { name: "Life L190 1990", d1: "B. Giacomelli", d2: "G. Brabham", stats: { pilota1: 60, pilota2: 50, strategia: 20, aerodinamica: 20, motore: 5 } }, // Motore W12 lentissimo, non si pre-qualificava mai
+            { name: "Andrea Moda 1992", d1: "R. Moreno", d2: "P. McCarthy", stats: { pilota1: 65, pilota2: 55, strategia: 10, aerodinamica: 20, motore: 30 } }, // Il peggior team della storia, disorganizzazione totale
+            { name: "Lola T97/30 1997", d1: "V. Sospiri", d2: "R. Rosset", stats: { pilota1: 60, pilota2: 50, strategia: 15, aerodinamica: 15, motore: 25 } }, // A 12 secondi dalla pole, fallita dopo 1 gara
 
             // --- STAGIONE 2000 ---
             { name: "Ferrari 2000", d1: "M. Schumacher", d2: "R. Barrichello", stats: { pilota1: 99, pilota2: 88, strategia: 96, aerodinamica: 98, motore: 97 } },
