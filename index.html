@@ -141,30 +141,123 @@
 
     <script>
         let teams = [
-            { name: "Ferrari 2004", d1: "M. Schumacher", d2: "R. Barrichello", stats: { pilota1: 99, pilota2: 88, strategia: 96, aerodinamica: 95, motore: 98 } },
-            { name: "Red Bull 2023", d1: "M. Verstappen", d2: "S. Perez", stats: { pilota1: 99, pilota2: 85, strategia: 98, aerodinamica: 99, motore: 95 } },
-            { name: "Mercedes 2014", d1: "L. Hamilton", d2: "N. Rosberg", stats: { pilota1: 96, pilota2: 90, strategia: 92, aerodinamica: 88, motore: 99 } },
+            // --- LE LEGGENDE STORICHE ---
             { name: "McLaren 1988", d1: "A. Senna", d2: "A. Prost", stats: { pilota1: 99, pilota2: 98, strategia: 90, aerodinamica: 95, motore: 97 } },
             { name: "Williams 1992", d1: "N. Mansell", d2: "R. Patrese", stats: { pilota1: 95, pilota2: 85, strategia: 90, aerodinamica: 99, motore: 92 } },
-            { name: "McLaren 2005", d1: "K. Raikkonen", d2: "J. Montoya", stats: { pilota1: 97, pilota2: 88, strategia: 85, aerodinamica: 98, motore: 50 } }, 
-            { name: "Ferrari 2022", d1: "C. Leclerc", d2: "C. Sainz", stats: { pilota1: 93, pilota2: 86, strategia: 50, aerodinamica: 94, motore: 75 } }, 
-            { name: "Red Bull 2013", d1: "S. Vettel", d2: "M. Webber", stats: { pilota1: 98, pilota2: 82, strategia: 94, aerodinamica: 99, motore: 80 } },
-            { name: "Brawn GP 2009", d1: "J. Button", d2: "R. Barrichello", stats: { pilota1: 92, pilota2: 85, strategia: 96, aerodinamica: 95, motore: 88 } },
-            { name: "Renault 2005", d1: "F. Alonso", d2: "G. Fisichella", stats: { pilota1: 96, pilota2: 84, strategia: 92, aerodinamica: 93, motore: 90 } },
-            { name: "Force India 2017", d1: "S. Perez", d2: "E. Ocon", stats: { pilota1: 85, pilota2: 84, strategia: 80, aerodinamica: 75, motore: 92 } }, 
-            { name: "Lotus 2012", d1: "K. Raikkonen", d2: "R. Grosjean", stats: { pilota1: 94, pilota2: 80, strategia: 82, aerodinamica: 88, motore: 85 } },
-            { name: "Aston Martin 2023", d1: "F. Alonso", d2: "L. Stroll", stats: { pilota1: 95, pilota2: 70, strategia: 80, aerodinamica: 88, motore: 85 } },
+
+            // --- STAGIONE 2000 ---
+            { name: "Ferrari 2000", d1: "M. Schumacher", d2: "R. Barrichello", stats: { pilota1: 99, pilota2: 88, strategia: 96, aerodinamica: 98, motore: 97 } },
+            { name: "McLaren 2000", d1: "M. Häkkinen", d2: "D. Coulthard", stats: { pilota1: 96, pilota2: 89, strategia: 88, aerodinamica: 96, motore: 98 } },
+            { name: "Williams BMW 2000", d1: "R. Schumacher", d2: "J. Button", stats: { pilota1: 86, pilota2: 78, strategia: 85, aerodinamica: 78, motore: 93 } },
+            { name: "Benetton 2000", d1: "G. Fisichella", d2: "A. Wurz", stats: { pilota1: 84, pilota2: 72, strategia: 68, aerodinamica: 74, motore: 72 } },
+            { name: "BAR Honda 2000", d1: "J. Villeneuve", d2: "R. Zonta", stats: { pilota1: 85, pilota2: 70, strategia: 70, aerodinamica: 70, motore: 82 } },
+            { name: "Jordan 2000", d1: "H. Frentzen", d2: "J. Trulli", stats: { pilota1: 86, pilota2: 82, strategia: 78, aerodinamica: 75, motore: 78 } },
+
+            // --- STAGIONE 2001 ---
+            { name: "Ferrari 2001", d1: "M. Schumacher", d2: "R. Barrichello", stats: { pilota1: 99, pilota2: 87, strategia: 98, aerodinamica: 99, motore: 98 } },
+            { name: "McLaren 2001", d1: "D. Coulthard", d2: "M. Häkkinen", stats: { pilota1: 90, pilota2: 88, strategia: 82, aerodinamica: 92, motore: 94 } },
+            { name: "Williams 2001", d1: "R. Schumacher", d2: "J. Montoya", stats: { pilota1: 88, pilota2: 89, strategia: 86, aerodinamica: 85, motore: 99 } },
+            { name: "Sauber 2001", d1: "N. Heidfeld", d2: "K. Räikkönen", stats: { pilota1: 85, pilota2: 86, strategia: 88, aerodinamica: 80, motore: 84 } },
+            { name: "Minardi 2001", d1: "F. Alonso", d2: "T. Marques", stats: { pilota1: 85, pilota2: 60, strategia: 70, aerodinamica: 55, motore: 50 } }, 
+
+            // --- STAGIONE 2002 ---
+            { name: "Ferrari 2002", d1: "M. Schumacher", d2: "R. Barrichello", stats: { pilota1: 99, pilota2: 91, strategia: 92, aerodinamica: 99, motore: 99 } },
+            { name: "Williams 2002", d1: "J. Montoya", d2: "R. Schumacher", stats: { pilota1: 92, pilota2: 87, strategia: 84, aerodinamica: 84, motore: 98 } },
+            { name: "McLaren 2002", d1: "D. Coulthard", d2: "K. Räikkönen", stats: { pilota1: 86, pilota2: 89, strategia: 82, aerodinamica: 86, motore: 88 } },
+            { name: "Renault 2002", d1: "J. Trulli", d2: "J. Button", stats: { pilota1: 83, pilota2: 82, strategia: 85, aerodinamica: 82, motore: 78 } },
+
+            // --- STAGIONE 2003 ---
+            { name: "Ferrari 2003", d1: "M. Schumacher", d2: "R. Barrichello", stats: { pilota1: 97, pilota2: 88, strategia: 96, aerodinamica: 94, motore: 96 } },
+            { name: "Williams 2003", d1: "J. Montoya", d2: "R. Schumacher", stats: { pilota1: 95, pilota2: 89, strategia: 88, aerodinamica: 93, motore: 98 } },
+            { name: "McLaren 2003", d1: "K. Räikkönen", d2: "D. Coulthard", stats: { pilota1: 96, pilota2: 83, strategia: 94, aerodinamica: 92, motore: 90 } },
+            { name: "Renault 2003", d1: "F. Alonso", d2: "J. Trulli", stats: { pilota1: 93, pilota2: 85, strategia: 90, aerodinamica: 95, motore: 80 } },
+
+            // --- STAGIONE 2004 ---
+            { name: "Ferrari 2004", d1: "M. Schumacher", d2: "R. Barrichello", stats: { pilota1: 99, pilota2: 93, strategia: 99, aerodinamica: 99, motore: 99 } },
+            { name: "BAR Honda 2004", d1: "J. Button", d2: "T. Sato", stats: { pilota1: 95, pilota2: 80, strategia: 92, aerodinamica: 92, motore: 94 } },
+            { name: "Renault 2004", d1: "F. Alonso", d2: "J. Trulli", stats: { pilota1: 92, pilota2: 86, strategia: 85, aerodinamica: 90, motore: 84 } },
+            { name: "Williams BMW 2004", d1: "J. Montoya", d2: "R. Schumacher", stats: { pilota1: 88, pilota2: 83, strategia: 75, aerodinamica: 82, motore: 96 } },
+            { name: "McLaren Mercedes 2004", d1: "K. Räikkönen", d2: "D. Coulthard", stats: { pilota1: 92, pilota2: 80, strategia: 70, aerodinamica: 80, motore: 85 } },
+
+            // --- STAGIONE 2005 ---
+            { name: "Renault 2005", d1: "F. Alonso", d2: "G. Fisichella", stats: { pilota1: 98, pilota2: 84, strategia: 96, aerodinamica: 97, motore: 94 } },
+            { name: "McLaren 2005", d1: "K. Räikkönen", d2: "J. Montoya", stats: { pilota1: 97, pilota2: 87, strategia: 80, aerodinamica: 99, motore: 70 } }, 
+            { name: "Ferrari 2005", d1: "M. Schumacher", d2: "R. Barrichello", stats: { pilota1: 90, pilota2: 80, strategia: 85, aerodinamica: 84, motore: 92 } },
+            { name: "Toyota 2005", d1: "R. Schumacher", d2: "J. Trulli", stats: { pilota1: 86, pilota2: 87, strategia: 84, aerodinamica: 86, motore: 90 } },
+
+            // --- OUTSIDER 2008-2009 ---
             { name: "BMW Sauber 2008", d1: "R. Kubica", d2: "N. Heidfeld", stats: { pilota1: 90, pilota2: 82, strategia: 85, aerodinamica: 86, motore: 88 } },
             { name: "Toro Rosso 2008", d1: "S. Vettel", d2: "S. Bourdais", stats: { pilota1: 92, pilota2: 75, strategia: 80, aerodinamica: 84, motore: 85 } }, 
-            { name: "McLaren Honda 2015", d1: "F. Alonso", d2: "J. Button", stats: { pilota1: 92, pilota2: 88, strategia: 75, aerodinamica: 78, motore: 20 } }, 
+            { name: "Brawn GP 2009", d1: "J. Button", d2: "R. Barrichello", stats: { pilota1: 92, pilota2: 85, strategia: 96, aerodinamica: 95, motore: 88 } },
+
+            // --- STAGIONE 2011 ---
+            { name: "Red Bull 2011", d1: "S. Vettel", d2: "M. Webber", stats: { pilota1: 98, pilota2: 86, strategia: 94, aerodinamica: 99, motore: 86 } },
+            { name: "McLaren 2011", d1: "J. Button", d2: "L. Hamilton", stats: { pilota1: 94, pilota2: 88, strategia: 88, aerodinamica: 92, motore: 97 } },
+            { name: "Ferrari 2011", d1: "F. Alonso", d2: "F. Massa", stats: { pilota1: 96, pilota2: 78, strategia: 80, aerodinamica: 84, motore: 94 } },
+            { name: "Team HRT 2011", d1: "V. Liuzzi", d2: "D. Ricciardo", stats: { pilota1: 60, pilota2: 68, strategia: 50, aerodinamica: 50, motore: 55 } },
+
+            // --- STAGIONE 2012 ---
+            { name: "Red Bull 2012", d1: "S. Vettel", d2: "M. Webber", stats: { pilota1: 96, pilota2: 85, strategia: 93, aerodinamica: 96, motore: 87 } },
+            { name: "Ferrari 2012", d1: "F. Alonso", d2: "F. Massa", stats: { pilota1: 99, pilota2: 76, strategia: 90, aerodinamica: 82, motore: 92 } },
+            { name: "McLaren 2012", d1: "L. Hamilton", d2: "J. Button", stats: { pilota1: 95, pilota2: 88, strategia: 72, aerodinamica: 94, motore: 96 } },
+            { name: "Lotus 2012", d1: "K. Räikkönen", d2: "R. Grosjean", stats: { pilota1: 94, pilota2: 82, strategia: 86, aerodinamica: 91, motore: 87 } },
+
+            // --- STAGIONE 2013 ---
+            { name: "Red Bull 2013", d1: "S. Vettel", d2: "M. Webber", stats: { pilota1: 99, pilota2: 84, strategia: 96, aerodinamica: 99, motore: 88 } },
+            { name: "Mercedes 2013", d1: "L. Hamilton", d2: "N. Rosberg", stats: { pilota1: 91, pilota2: 90, strategia: 84, aerodinamica: 90, motore: 94 } },
+            { name: "Ferrari 2013", d1: "F. Alonso", d2: "F. Massa", stats: { pilota1: 95, pilota2: 75, strategia: 78, aerodinamica: 83, motore: 91 } },
+
+            // --- STAGIONE 2014 ---
+            { name: "Mercedes 2014", d1: "L. Hamilton", d2: "N. Rosberg", stats: { pilota1: 97, pilota2: 94, strategia: 92, aerodinamica: 96, motore: 99 } },
+            { name: "Red Bull 2014", d1: "D. Ricciardo", d2: "S. Vettel", stats: { pilota1: 95, pilota2: 86, strategia: 91, aerodinamica: 94, motore: 70 } },
+            { name: "Williams 2014", d1: "V. Bottas", d2: "F. Massa", stats: { pilota1: 90, pilota2: 84, strategia: 76, aerodinamica: 78, motore: 99 } },
+            { name: "Ferrari 2014", d1: "F. Alonso", d2: "K. Räikkönen", stats: { pilota1: 94, pilota2: 78, strategia: 68, aerodinamica: 75, motore: 74 } },
+
+            // --- STAGIONE 2015 ---
+            { name: "Mercedes 2015", d1: "L. Hamilton", d2: "N. Rosberg", stats: { pilota1: 98, pilota2: 92, strategia: 94, aerodinamica: 97, motore: 99 } },
+            { name: "Ferrari 2015", d1: "S. Vettel", d2: "K. Räikkönen", stats: { pilota1: 95, pilota2: 82, strategia: 86, aerodinamica: 88, motore: 92 } },
+            { name: "McLaren Honda 2015", d1: "F. Alonso", d2: "J. Button", stats: { pilota1: 88, pilota2: 85, strategia: 70, aerodinamica: 80, motore: 50 } },
+
+            // --- STAGIONE 2016 ---
+            { name: "Mercedes 2016", d1: "N. Rosberg", d2: "L. Hamilton", stats: { pilota1: 96, pilota2: 97, strategia: 90, aerodinamica: 98, motore: 99 } },
+            { name: "Red Bull 2016", d1: "D. Ricciardo", d2: "M. Verstappen", stats: { pilota1: 93, pilota2: 92, strategia: 93, aerodinamica: 96, motore: 82 } },
+            { name: "Ferrari 2016", d1: "S. Vettel", d2: "K. Räikkönen", stats: { pilota1: 88, pilota2: 85, strategia: 70, aerodinamica: 85, motore: 91 } },
+
+            // --- STAGIONE 2017 ---
+            { name: "Mercedes 2017", d1: "L. Hamilton", d2: "V. Bottas", stats: { pilota1: 98, pilota2: 87, strategia: 93, aerodinamica: 95, motore: 99 } },
+            { name: "Ferrari 2017", d1: "S. Vettel", d2: "K. Räikkönen", stats: { pilota1: 94, pilota2: 84, strategia: 84, aerodinamica: 96, motore: 95 } },
+            { name: "Red Bull 2017", d1: "M. Verstappen", d2: "D. Ricciardo", stats: { pilota1: 91, pilota2: 90, strategia: 92, aerodinamica: 93, motore: 84 } },
+            { name: "Sauber 2017", d1: "M. Ericsson", d2: "P. Wehrlein", stats: { pilota1: 66, pilota2: 76, strategia: 60, aerodinamica: 62, motore: 78 } },
+
+            // --- STAGIONE 2018 ---
+            { name: "Mercedes 2018", d1: "L. Hamilton", d2: "V. Bottas", stats: { pilota1: 99, pilota2: 84, strategia: 95, aerodinamica: 97, motore: 98 } },
+            { name: "Ferrari 2018", d1: "S. Vettel", d2: "K. Räikkönen", stats: { pilota1: 89, pilota2: 90, strategia: 78, aerodinamica: 96, motore: 98 } },
+            { name: "Red Bull 2018", d1: "M. Verstappen", d2: "D. Ricciardo", stats: { pilota1: 94, pilota2: 88, strategia: 94, aerodinamica: 97, motore: 85 } },
+            { name: "Williams 2018", d1: "L. Stroll", d2: "S. Sirotkin", stats: { pilota1: 72, pilota2: 64, strategia: 55, aerodinamica: 52, motore: 96 } },
+
+            // --- STAGIONE 2019 ---
+            { name: "Mercedes 2019", d1: "L. Hamilton", d2: "V. Bottas", stats: { pilota1: 98, pilota2: 88, strategia: 96, aerodinamica: 98, motore: 96 } },
+            { name: "Ferrari 2019", d1: "C. Leclerc", d2: "S. Vettel", stats: { pilota1: 94, pilota2: 88, strategia: 75, aerodinamica: 88, motore: 99 } },
+            { name: "Red Bull 2019", d1: "M. Verstappen", d2: "A. Albon", stats: { pilota1: 96, pilota2: 78, strategia: 95, aerodinamica: 95, motore: 92 } },
+            { name: "McLaren 2019", d1: "C. Sainz", d2: "L. Norris", stats: { pilota1: 91, pilota2: 85, strategia: 88, aerodinamica: 88, motore: 88 } },
+
+            // --- STAGIONE 2020 ---
+            { name: "Mercedes 2020", d1: "L. Hamilton", d2: "V. Bottas", stats: { pilota1: 99, pilota2: 86, strategia: 97, aerodinamica: 99, motore: 99 } },
+            { name: "Red Bull 2020", d1: "M. Verstappen", d2: "A. Albon", stats: { pilota1: 97, pilota2: 75, strategia: 95, aerodinamica: 94, motore: 94 } },
+            { name: "Racing Point 2020", d1: "S. Pérez", d2: "L. Stroll", stats: { pilota1: 93, pilota2: 80, strategia: 82, aerodinamica: 91, motore: 98 } },
+            { name: "Renault 2020", d1: "D. Ricciardo", d2: "E. Ocon", stats: { pilota1: 92, pilota2: 82, strategia: 84, aerodinamica: 86, motore: 92 } },
+            { name: "Ferrari 2020", d1: "C. Leclerc", d2: "S. Vettel", stats: { pilota1: 93, pilota2: 74, strategia: 65, aerodinamica: 70, motore: 68 } },
+            { name: "Williams 2020", d1: "G. Russell", d2: "N. Latifi", stats: { pilota1: 88, pilota2: 60, strategia: 68, aerodinamica: 58, motore: 98 } },
+
+            // --- GRIGLIA MODERNA (2021-2024) ---
             { name: "Haas 2021", d1: "M. Schumacher", d2: "N. Mazepin", stats: { pilota1: 65, pilota2: 60, strategia: 60, aerodinamica: 40, motore: 50 } },
-            { name: "Minardi 2001", d1: "F. Alonso", d2: "T. Marques", stats: { pilota1: 85, pilota2: 60, strategia: 70, aerodinamica: 55, motore: 50 } }, 
-            { name: "Williams 2019", d1: "G. Russell", d2: "R. Kubica", stats: { pilota1: 80, pilota2: 65, strategia: 65, aerodinamica: 30, motore: 70 } },
-            { name: "Ferrari 2020", d1: "C. Leclerc", d2: "S. Vettel", stats: { pilota1: 92, pilota2: 85, strategia: 70, aerodinamica: 75, motore: 60 } }, 
-            { name: "McLaren 2023", d1: "L. Norris", d2: "O. Piastri", stats: { pilota1: 90, pilota2: 88, strategia: 85, aerodinamica: 92, motore: 88 } },
-            { name: "Alpine 2024", d1: "P. Gasly", d2: "E. Ocon", stats: { pilota1: 84, pilota2: 84, strategia: 65, aerodinamica: 60, motore: 65 } },
+            { name: "Ferrari 2022", d1: "C. Leclerc", d2: "C. Sainz", stats: { pilota1: 93, pilota2: 86, strategia: 50, aerodinamica: 94, motore: 75 } }, 
+            { name: "Red Bull 2023", d1: "M. Verstappen", d2: "S. Perez", stats: { pilota1: 99, pilota2: 85, strategia: 98, aerodinamica: 99, motore: 95 } },
             { name: "Mercedes 2023", d1: "L. Hamilton", d2: "G. Russell", stats: { pilota1: 94, pilota2: 88, strategia: 85, aerodinamica: 80, motore: 90 } },
+            { name: "Aston Martin 2023", d1: "F. Alonso", d2: "L. Stroll", stats: { pilota1: 95, pilota2: 70, strategia: 80, aerodinamica: 88, motore: 85 } },
+            { name: "McLaren 2023", d1: "L. Norris", d2: "O. Piastri", stats: { pilota1: 90, pilota2: 88, strategia: 85, aerodinamica: 92, motore: 88 } },
             { name: "Williams 2023", d1: "A. Albon", d2: "L. Sargeant", stats: { pilota1: 86, pilota2: 65, strategia: 75, aerodinamica: 80, motore: 88 } }, 
+            { name: "Alpine 2024", d1: "P. Gasly", d2: "E. Ocon", stats: { pilota1: 84, pilota2: 84, strategia: 65, aerodinamica: 60, motore: 65 } },
             { name: "Sauber 2024", d1: "V. Bottas", d2: "G. Zhou", stats: { pilota1: 80, pilota2: 78, strategia: 60, aerodinamica: 65, motore: 75 } }
         ];
 
