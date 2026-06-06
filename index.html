@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>F1 24-0 Challenge - Simulatore Estremo</title>
+    <title>F1 24-0 Challenge - Campionato Mondiale</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,400;0,700;1,400&display=swap');
 
@@ -96,7 +96,7 @@
         
         .standings-header {
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             background: #111;
             padding: 10px 20px;
             border-radius: 5px;
@@ -104,6 +104,7 @@
             font-weight: bold;
             color: #ffeb3b;
             border: 1px solid #333;
+            font-size: 1.2em;
         }
 
         #race-log {
@@ -145,17 +146,17 @@
             display: none;
             animation: fadeIn 1s ease-in-out;
         }
-        .championship-table { width: 100%; text-align: left; margin-top: 15px; font-size: 1.2em; border-collapse: collapse; }
-        .championship-table th, .championship-table td { padding: 10px; border-bottom: 1px solid #333; }
-        .championship-table .player-row { color: #ffd700; font-weight: bold; }
+        .championship-table { width: 100%; text-align: left; margin-top: 15px; font-size: 1.1em; border-collapse: collapse; }
+        .championship-table th, .championship-table td { padding: 8px 10px; border-bottom: 1px solid #333; }
+        .championship-table .player-row { color: #ffd700; font-weight: bold; background: rgba(255, 215, 0, 0.1); }
         .championship-table .rival-row { color: #aaa; }
     </style>
 </head>
 <body>
 
     <div class="game-container">
-        <h1>🏁 F1 24-0 Challenge 🏁</h1>
-        <p>L'algoritmo non perdona: un componente debole farà crollare l'intera monoposto. Riuscirai a battere i rivali e vincere il Mondiale?</p>
+        <h1>🏁 F1 Mondiale Costruttori 🏁</h1>
+        <p>Sfida 9 scuderie storiche in una simulazione reale da 24 gare. Un mix equilibrato di piloti, auto e muretto è la chiave per il titolo.</p>
         
         <div id="spinner">Premi "Pesca" per estrarre una scuderia!</div>
         <button id="spinBtn" onclick="spin()">🎲 Pesca Scuderia</button>
@@ -182,18 +183,20 @@
             <button id="simBtn" onclick="avviaSimulazione()">🚦 Spegni i semafori!</button>
             
             <div class="standings-header" id="live-standings" style="display:none;">
-                <span>Il tuo Team: <span id="pts-player">0</span> pts</span>
-                <span>Scuderia Rivale: <span id="pts-rival">0</span> pts</span>
+                <span>I Tuoi Punti: <span id="pts-player">0</span> 🏆</span>
             </div>
 
             <div id="race-log"></div>
 
             <div id="final-standings">
-                <h2 id="verdict-title">Risultato Campionato</h2>
+                <h2 id="verdict-title">Classifica Finale Costruttori</h2>
                 <table class="championship-table">
-                    <tr><th>Pos</th><th>Scuderia</th><th>Punti</th></tr>
-                    <tr class="player-row"><td>1</td><td>La tua Squadra</td><td id="final-player-pts">0</td></tr>
-                    <tr class="rival-row"><td>2</td><td>Scuderia Rivale</td><td id="final-rival-pts">0</td></tr>
+                    <thead>
+                        <tr><th>Pos</th><th>Scuderia</th><th>Punti</th></tr>
+                    </thead>
+                    <tbody id="championship-body">
+                        <!-- Generato dinamicamente -->
+                    </tbody>
                 </table>
                 <p id="verdict-subtitle" style="margin-top: 15px; color: #ccc; font-style: italic;"></p>
             </div>
@@ -201,10 +204,53 @@
     </div>
 
     <script>
-        // --- IL TUO DATABASE COMPLETO INCOLLATO QUI ---
         let teams = [
-            { name: "McLaren 1988", d1: "A. Senna", d2: "A. Prost", stats: { pilota1: 99, pilota2: 98, strategia: 90, aerodinamica: 95, motore: 97 } },
-            { name: "Williams 1992", d1: "N. Mansell", d2: "R. Patrese", stats: { pilota1: 95, pilota2: 85, strategia: 90, aerodinamica: 99, motore: 92 } },
+            // --- GLI ALBORI (ANNI '50 e '60) ---
+            { name: "Alfa Romeo 1950", d1: "N. Farina", d2: "J. Fangio", stats: { pilota1: 94, pilota2: 98, strategia: 80, aerodinamica: 85, motore: 96 } },
+            { name: "Mercedes W196 1954", d1: "J. Fangio", d2: "S. Moss", stats: { pilota1: 99, pilota2: 95, strategia: 90, aerodinamica: 95, motore: 99 } },
+            { name: "Maserati 250F 1957", d1: "J. Fangio", d2: "J. Behra", stats: { pilota1: 99, pilota2: 85, strategia: 80, aerodinamica: 88, motore: 94 } },
+            { name: "Lotus 25 1963", d1: "J. Clark", d2: "T. Taylor", stats: { pilota1: 99, pilota2: 75, strategia: 85, aerodinamica: 98, motore: 90 } },
+            { name: "Brabham BT19 1966", d1: "J. Brabham", d2: "D. Hulme", stats: { pilota1: 95, pilota2: 92, strategia: 94, aerodinamica: 90, motore: 92 } },
+
+            // --- L'ERA DELL'AERODINAMICA (ANNI '70) ---
+            { name: "Lotus 72 1970", d1: "J. Rindt", d2: "E. Fittipaldi", stats: { pilota1: 98, pilota2: 92, strategia: 88, aerodinamica: 97, motore: 90 } },
+            { name: "Tyrrell 003 1971", d1: "J. Stewart", d2: "F. Cevert", stats: { pilota1: 99, pilota2: 88, strategia: 92, aerodinamica: 95, motore: 94 } },
+            { name: "Ferrari 312T 1975", d1: "N. Lauda", d2: "C. Regazzoni", stats: { pilota1: 98, pilota2: 88, strategia: 94, aerodinamica: 96, motore: 97 } },
+            { name: "McLaren M23 1976", d1: "J. Hunt", d2: "J. Mass", stats: { pilota1: 95, pilota2: 82, strategia: 88, aerodinamica: 94, motore: 95 } },
+            { name: "Lotus 79 1978", d1: "M. Andretti", d2: "R. Peterson", stats: { pilota1: 96, pilota2: 95, strategia: 90, aerodinamica: 99, motore: 92 } },
+            { name: "Renault RS01 1979", d1: "J. Jabouille", d2: "R. Arnoux", stats: { pilota1: 85, pilota2: 88, strategia: 75, aerodinamica: 85, motore: 60 } },
+
+            // --- I TURBO E LE LEGGENDE (ANNI '80) ---
+            { name: "Williams FW07 1980", d1: "A. Jones", d2: "C. Reutemann", stats: { pilota1: 94, pilota2: 92, strategia: 90, aerodinamica: 96, motore: 94 } },
+            { name: "Brabham BT52 1983", d1: "N. Piquet", d2: "R. Patrese", stats: { pilota1: 96, pilota2: 88, strategia: 92, aerodinamica: 95, motore: 98 } },
+            { name: "McLaren MP4/2 1984", d1: "N. Lauda", d2: "A. Prost", stats: { pilota1: 98, pilota2: 97, strategia: 96, aerodinamica: 96, motore: 95 } },
+            { name: "Lotus 97T 1985", d1: "A. Senna", d2: "E. De Angelis", stats: { pilota1: 98, pilota2: 88, strategia: 85, aerodinamica: 94, motore: 90 } },
+            { name: "Williams FW11 1986", d1: "N. Mansell", d2: "N. Piquet", stats: { pilota1: 96, pilota2: 96, strategia: 84, aerodinamica: 95, motore: 99 } },
+            { name: "McLaren MP4/4 1988", d1: "A. Senna", d2: "A. Prost", stats: { pilota1: 99, pilota2: 99, strategia: 94, aerodinamica: 98, motore: 98 } },
+            { name: "Ferrari 640 1989", d1: "N. Mansell", d2: "G. Berger", stats: { pilota1: 95, pilota2: 92, strategia: 80, aerodinamica: 96, motore: 55 } },
+
+            // --- L'ELETTRONICA E LE LOTTE EPICHE (ANNI '90) ---
+            { name: "McLaren MP4/5B 1990", d1: "A. Senna", d2: "G. Berger", stats: { pilota1: 99, pilota2: 90, strategia: 92, aerodinamica: 95, motore: 97 } },
+            { name: "Ferrari 641 1990", d1: "A. Prost", d2: "N. Mansell", stats: { pilota1: 98, pilota2: 94, strategia: 88, aerodinamica: 96, motore: 95 } },
+            { name: "Jordan 191 1991", d1: "M. Schumacher", d2: "A. De Cesaris", stats: { pilota1: 90, pilota2: 82, strategia: 85, aerodinamica: 92, motore: 84 } },
+            { name: "Williams FW14B 1992", d1: "N. Mansell", d2: "R. Patrese", stats: { pilota1: 96, pilota2: 86, strategia: 94, aerodinamica: 99, motore: 95 } },
+            { name: "Benetton B192 1992", d1: "M. Schumacher", d2: "M. Brundle", stats: { pilota1: 95, pilota2: 84, strategia: 92, aerodinamica: 94, motore: 88 } },
+            { name: "McLaren MP4/8 1993", d1: "A. Senna", d2: "M. Andretti", stats: { pilota1: 99, pilota2: 70, strategia: 90, aerodinamica: 95, motore: 85 } },
+            { name: "Williams FW15C 1993", d1: "A. Prost", d2: "D. Hill", stats: { pilota1: 97, pilota2: 88, strategia: 95, aerodinamica: 99, motore: 96 } },
+            { name: "Benetton B194 1994", d1: "M. Schumacher", d2: "J. Verstappen", stats: { pilota1: 98, pilota2: 75, strategia: 95, aerodinamica: 96, motore: 92 } },
+            { name: "Ferrari 412 T2 1995", d1: "J. Alesi", d2: "G. Berger", stats: { pilota1: 90, pilota2: 88, strategia: 80, aerodinamica: 88, motore: 94 } },
+            { name: "Williams FW18 1996", d1: "D. Hill", d2: "J. Villeneuve", stats: { pilota1: 92, pilota2: 94, strategia: 92, aerodinamica: 98, motore: 96 } },
+            { name: "Ferrari F310 1996", d1: "M. Schumacher", d2: "E. Irvine", stats: { pilota1: 98, pilota2: 80, strategia: 85, aerodinamica: 75, motore: 85 } },
+            { name: "Williams FW19 1997", d1: "J. Villeneuve", d2: "H. Frentzen", stats: { pilota1: 95, pilota2: 85, strategia: 90, aerodinamica: 96, motore: 95 } },
+            { name: "McLaren MP4/13 1998", d1: "M. Häkkinen", d2: "D. Coulthard", stats: { pilota1: 97, pilota2: 90, strategia: 92, aerodinamica: 98, motore: 98 } },
+            { name: "Jordan 199 1999", d1: "H. Frentzen", d2: "D. Hill", stats: { pilota1: 94, pilota2: 82, strategia: 95, aerodinamica: 92, motore: 88 } },
+
+            // --- I PEGGIORI DISASTRI STORICI ---
+            { name: "Life L190 1990", d1: "B. Giacomelli", d2: "G. Brabham", stats: { pilota1: 60, pilota2: 50, strategia: 20, aerodinamica: 20, motore: 5 } },
+            { name: "Andrea Moda 1992", d1: "R. Moreno", d2: "P. McCarthy", stats: { pilota1: 65, pilota2: 55, strategia: 10, aerodinamica: 20, motore: 30 } },
+            { name: "Lola T97/30 1997", d1: "V. Sospiri", d2: "R. Rosset", stats: { pilota1: 60, pilota2: 50, strategia: 15, aerodinamica: 15, motore: 25 } },
+
+            // --- DAL 2000 IN POI ---
             { name: "Ferrari 2000", d1: "M. Schumacher", d2: "R. Barrichello", stats: { pilota1: 99, pilota2: 88, strategia: 96, aerodinamica: 98, motore: 97 } },
             { name: "McLaren 2000", d1: "M. Häkkinen", d2: "D. Coulthard", stats: { pilota1: 96, pilota2: 89, strategia: 88, aerodinamica: 96, motore: 98 } },
             { name: "Williams BMW 2000", d1: "R. Schumacher", d2: "J. Button", stats: { pilota1: 86, pilota2: 78, strategia: 85, aerodinamica: 78, motore: 93 } },
@@ -367,111 +413,147 @@
             document.getElementById("live-standings").style.display = "flex";
             const logBox = document.getElementById("race-log");
             
-            let myPts = 0;
-            let rivalPts = 0;
-            let garaIndex = 0;
+            // Creiamo un campionato da 10 scuderie
+            let championship = [];
+            championship.push({ id: 'player', name: 'IL TUO TEAM', pts: 0, stats: chosenStats, isPlayer: true });
+            
+            let dbCopy = [...teams];
+            for(let i=0; i<9; i++) {
+                if(dbCopy.length > 0) {
+                    let idx = Math.floor(Math.random() * dbCopy.length);
+                    let aiTeam = dbCopy.splice(idx, 1)[0];
+                    championship.push({ id: 'ai_'+i, name: aiTeam.name, pts: 0, stats: aiTeam.stats, isPlayer: false });
+                }
+            }
 
-            // Algoritmo di difficoltà estrema
-            // Se il motore fa schifo, la penalità è immensa (100 - motore = probabilità base di DNF)
-            const dnfChanceBase = chosenStats.motore < 90 ? (100 - chosenStats.motore) * 0.8 : 2; 
-            
-            // Un errore al muretto distrugge il passo gara
-            const penaltyStrat = chosenStats.strategia < 85 ? (100 - chosenStats.strategia) * 0.5 : 0;
-            
-            // Pace puro calcolato dando peso enorme ai piloti e all'aero
-            const basePace = (chosenStats.pilota1 * 0.3) + (chosenStats.pilota2 * 0.2) + (chosenStats.aerodinamica * 0.4) + (chosenStats.motore * 0.1);
+            const pointsSystem = [25, 18, 15, 12, 10, 8, 6, 4, 2, 1];
+            let garaIndex = 0;
 
             const intervalloGare = setInterval(() => {
                 const gp = calendario[garaIndex];
-                let htmlRow = "";
                 
-                // SIMULAZIONE RIVALE (Il rivale è una top team costante)
-                let rivalRacePts = Math.random() > 0.15 ? Math.floor(Math.random() * 11) + 15 : 0; // Tra 15 e 25 pt (o DNF)
-                rivalPts += rivalRacePts;
-
-                // SIMULAZIONE GIOCATORE
-                let rollDnf = Math.random() * 100;
-                
-                if (rollDnf < dnfChanceBase) {
-                    // DNF Giocatore
-                    htmlRow = `
-                        <div class="race-row dnf">
-                            <span class="race-flag">${gp.flag} ${gp.gp}</span>
-                            <span class="race-result">RITIRO 💥 (+0)</span>
-                        </div>
-                    `;
-                } else {
-                    // Corsa finita, calcolo posizione
-                    let racePerf = basePace - (Math.random() * penaltyStrat) + (Math.random() * 8 - 4);
+                // Simula performance per ogni team
+                let raceResults = [];
+                championship.forEach(team => {
+                    let st = team.stats;
                     
-                    let pts = 0;
-                    let txt = "";
-                    let css = "";
+                    // Probabilità Ritiro bilanciata (motore a 90 = 2.5% dnf. motore a 50 = 12.5% dnf)
+                    let dnfChance = (100 - st.motore) * 0.25; 
+                    let isDnf = (Math.random() * 100) < dnfChance;
+                    
+                    let pace = 0;
+                    if(!isDnf) {
+                        // Pace base: enfasi su Prima Guida, Aerodinamica e Motore
+                        let basePace = (st.pilota1 * 0.40) + (st.aerodinamica * 0.40) + (st.motore * 0.20);
+                        
+                        // Modificatore Strategia (Il muretto può farti guadagnare o perdere passo)
+                        let stratMod = (st.strategia - 80) * 0.3; 
+                        
+                        // Fattore Casuale Imprevedibile
+                        let randomForm = Math.random() * 15; 
+                        
+                        pace = basePace + stratMod + randomForm;
+                    }
+                    raceResults.push({ team: team, pace: pace, isDnf: isDnf });
+                });
 
-                    if (racePerf >= 96) { pts = 25; txt = "VITTORIA 🏆"; css = "win"; }
-                    else if (racePerf >= 92) { pts = 18; txt = "PODIO 🥈"; css = "podium"; }
-                    else if (racePerf >= 86) { pts = 10; txt = "A PUNTI 🏎️"; css = "points"; }
-                    else if (racePerf >= 80) { pts = 4; txt = "TOP 10 🏁"; css = "points"; }
-                    else { pts = 0; txt = "FUORI DAI PUNTI 📉"; css = ""; }
+                // Ordina dal più veloce al più lento
+                raceResults.sort((a, b) => b.pace - a.pace);
 
-                    myPts += pts;
-                    htmlRow = `
-                        <div class="race-row ${css}">
-                            <span class="race-flag">${gp.flag} ${gp.gp}</span>
-                            <span class="race-result">${txt} (+${pts})</span>
-                        </div>
-                    `;
-                }
+                let playerDnf = false;
+                let playerPos = 0;
+                let playerPtsGained = 0;
 
-                // Aggiorna UI
-                logBox.innerHTML += htmlRow;
+                // Assegna Punti e trova il giocatore
+                let validPos = 0;
+                raceResults.forEach(res => {
+                    if (!res.isDnf) {
+                        if (validPos < 10) {
+                            res.team.pts += pointsSystem[validPos];
+                            if(res.team.isPlayer) playerPtsGained = pointsSystem[validPos];
+                        }
+                        if(res.team.isPlayer) playerPos = validPos + 1;
+                        validPos++;
+                    } else {
+                        if(res.team.isPlayer) {
+                            playerPos = "RIT";
+                            playerDnf = true;
+                        }
+                    }
+                });
+
+                // Stampa Log Gara solo per il giocatore
+                let txt = "";
+                let css = "";
+                if (playerDnf) { txt = "RITIRO 💥 (+0)"; css = "dnf"; }
+                else if (playerPos === 1) { txt = "1° POSTO 🏆 (+25)"; css = "win"; }
+                else if (playerPos <= 3) { txt = playerPos + "° POSTO 🥈 (+"+playerPtsGained+")"; css = "podium"; }
+                else if (playerPos <= 10) { txt = playerPos + "° POSTO 🏎️ (+"+playerPtsGained+")"; css = "points"; }
+                else { txt = playerPos + "° POSTO 📉 (+0)"; css = ""; }
+
+                logBox.innerHTML += `
+                    <div class="race-row ${css}">
+                        <span class="race-flag">${gp.flag} ${gp.gp}</span>
+                        <span class="race-result">${txt}</span>
+                    </div>
+                `;
                 logBox.scrollTop = logBox.scrollHeight;
                 
-                // Aggiorna Punteggi Live
-                document.getElementById("pts-player").innerText = myPts;
-                document.getElementById("pts-rival").innerText = rivalPts;
+                // Aggiorna Punteggi Live Giocatore
+                let playerObj = championship.find(t => t.isPlayer);
+                document.getElementById("pts-player").innerText = playerObj.pts;
 
                 garaIndex++;
 
                 if (garaIndex >= calendario.length) {
                     clearInterval(intervalloGare);
-                    mostraVerdetto(myPts, rivalPts);
+                    mostraVerdetto(championship);
                 }
-            }, 300); // 300ms tra una gara e l'altra per creare suspense
+            }, 300);
         }
 
-        function mostraVerdetto(myPts, rivalPts) {
+        function mostraVerdetto(championship) {
             const standingsBox = document.getElementById("final-standings");
             standingsBox.style.display = "block";
             
-            document.getElementById("final-player-pts").innerText = myPts;
-            document.getElementById("final-rival-pts").innerText = rivalPts;
+            // Ordina la classifica finale
+            championship.sort((a, b) => b.pts - a.pts);
+
+            const tbody = document.getElementById("championship-body");
+            tbody.innerHTML = "";
+
+            let playerFinalRank = 0;
+
+            championship.forEach((team, index) => {
+                let isPlayerClass = team.isPlayer ? "player-row" : "rival-row";
+                if(team.isPlayer) playerFinalRank = index + 1;
+
+                tbody.innerHTML += `
+                    <tr class="${isPlayerClass}">
+                        <td>${index + 1}</td>
+                        <td>${team.name}</td>
+                        <td>${team.pts}</td>
+                    </tr>
+                `;
+            });
 
             const title = document.getElementById("verdict-title");
             const sub = document.getElementById("verdict-subtitle");
-            const playerRow = document.querySelector(".player-row");
-            const rivalRow = document.querySelector(".rival-row");
 
-            if (myPts > rivalPts) {
+            if (playerFinalRank === 1) {
                 title.innerText = "🏆 CAMPIONI DEL MONDO 🏆";
                 title.style.color = "#ffd700";
-                sub.innerText = "Hai costruito la macchina perfetta. La storia ricorderà questo dominio.";
-                playerRow.style.color = "#ffd700";
+                sub.innerText = "Straordinario! Hai dominato la classifica Costruttori battendo la storia!";
+            } else if (playerFinalRank <= 3) {
+                title.innerText = "🥈 A UN PASSO DALLA GLORIA";
+                title.style.color = "#c0c0c0";
+                sub.innerText = "Ottima stagione, ma non è bastato per vincere il Titolo Mondiale.";
             } else {
-                title.innerText = "🥈 STAGIONE FALLIMENTARE";
+                title.innerText = "🚜 STAGIONE FALLIMENTARE";
                 title.style.color = "#e10600";
-                sub.innerText = "Siete stati battuti. L'anello debole della scuderia vi è costato il mondiale.";
-                playerRow.style.color = "#fff";
-                rivalRow.style.color = "#ffd700";
-                
-                // Ordina la tabella visivamente
-                const tbody = document.querySelector(".championship-table tbody");
-                tbody.insertBefore(rivalRow, playerRow);
-                rivalRow.cells[0].innerText = "1";
-                playerRow.cells[0].innerText = "2";
+                sub.innerText = "Vettura non competitiva o troppi ritiri. I tuoi rivali hanno passeggiato.";
             }
         }
     </script>
 </body>
 </html>
-
