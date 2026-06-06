@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>F1 24-0 Challenge</title>
+    <title>F1 24-0 Challenge - Simulatore</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -50,6 +50,7 @@
             border-radius: 5px;
             cursor: pointer;
             transition: background 0.3s;
+            margin-top: 10px;
         }
         button:hover { background-color: #ff1e15; }
         button:disabled { background-color: #555; cursor: not-allowed; }
@@ -77,14 +78,38 @@
         .slot-value { font-style: italic; color: #ccc; text-align: right; }
         .slot.filled .slot-value { color: #fff; font-style: normal; font-weight: bold; }
         
-        #result { margin-top: 20px; font-size: 1.5em; font-weight: bold; white-space: pre-line; }
+        #simulation-area {
+            margin-top: 20px;
+            display: none;
+            text-align: center;
+        }
+        #race-log {
+            background: #15151e;
+            border: 1px solid #444;
+            height: 200px;
+            overflow-y: auto;
+            padding: 10px;
+            text-align: left;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            font-family: monospace;
+            font-size: 1.1em;
+            display: none;
+        }
+        .log-entry { margin-bottom: 5px; border-bottom: 1px dashed #333; padding-bottom: 3px; }
+        .log-win { color: #ffd700; font-weight: bold; }
+        .log-podium { color: #4caf50; }
+        .log-points { color: #2196f3; }
+        .log-dnf { color: #f44336; font-weight: bold; }
+        
+        #final-verdict { font-size: 1.5em; font-weight: bold; white-space: pre-line; margin-top: 10px; }
     </style>
 </head>
 <body>
 
     <div class="game-container">
         <h1>F1 24-0 Challenge</h1>
-        <p>Pesca una scuderia e costruisci il team perfetto. Riuscirai a vincere il mondiale?</p>
+        <p>Costruisci il team perfetto. L'algoritmo non perdona: un motore inaffidabile o un muretto disastroso ti costeranno il Mondiale!</p>
         
         <div id="spinner">Premi "Pesca" per iniziare!</div>
         <button id="spinBtn" onclick="spin()">Pesca Scuderia</button>
@@ -107,41 +132,35 @@
             </div>
         </div>
 
-        <div id="result"></div>
+        <div id="simulation-area">
+            <button id="simBtn" onclick="avviaSimulazione()">🏎️ Simula le 24 Gare!</button>
+            <div id="race-log"></div>
+            <div id="final-verdict"></div>
+        </div>
     </div>
 
     <script>
-        // Database Aggiornato con i Nomi dei Piloti
         let teams = [
-            // Dominatori Assoluti
             { name: "Ferrari 2004", d1: "M. Schumacher", d2: "R. Barrichello", stats: { pilota1: 99, pilota2: 88, strategia: 96, aerodinamica: 95, motore: 98 } },
             { name: "Red Bull 2023", d1: "M. Verstappen", d2: "S. Perez", stats: { pilota1: 99, pilota2: 85, strategia: 98, aerodinamica: 99, motore: 95 } },
             { name: "Mercedes 2014", d1: "L. Hamilton", d2: "N. Rosberg", stats: { pilota1: 96, pilota2: 90, strategia: 92, aerodinamica: 88, motore: 99 } },
             { name: "McLaren 1988", d1: "A. Senna", d2: "A. Prost", stats: { pilota1: 99, pilota2: 98, strategia: 90, aerodinamica: 95, motore: 97 } },
             { name: "Williams 1992", d1: "N. Mansell", d2: "R. Patrese", stats: { pilota1: 95, pilota2: 85, strategia: 90, aerodinamica: 99, motore: 92 } },
-
-            // Veloci ma Imperfette
             { name: "McLaren 2005", d1: "K. Raikkonen", d2: "J. Montoya", stats: { pilota1: 97, pilota2: 88, strategia: 85, aerodinamica: 98, motore: 50 } }, 
             { name: "Ferrari 2022", d1: "C. Leclerc", d2: "C. Sainz", stats: { pilota1: 93, pilota2: 86, strategia: 50, aerodinamica: 94, motore: 75 } }, 
             { name: "Red Bull 2013", d1: "S. Vettel", d2: "M. Webber", stats: { pilota1: 98, pilota2: 82, strategia: 94, aerodinamica: 99, motore: 80 } },
             { name: "Brawn GP 2009", d1: "J. Button", d2: "R. Barrichello", stats: { pilota1: 92, pilota2: 85, strategia: 96, aerodinamica: 95, motore: 88 } },
             { name: "Renault 2005", d1: "F. Alonso", d2: "G. Fisichella", stats: { pilota1: 96, pilota2: 84, strategia: 92, aerodinamica: 93, motore: 90 } },
-
-            // Outsider e Metà Classifica
             { name: "Force India 2017", d1: "S. Perez", d2: "E. Ocon", stats: { pilota1: 85, pilota2: 84, strategia: 80, aerodinamica: 75, motore: 92 } }, 
             { name: "Lotus 2012", d1: "K. Raikkonen", d2: "R. Grosjean", stats: { pilota1: 94, pilota2: 80, strategia: 82, aerodinamica: 88, motore: 85 } },
             { name: "Aston Martin 2023", d1: "F. Alonso", d2: "L. Stroll", stats: { pilota1: 95, pilota2: 70, strategia: 80, aerodinamica: 88, motore: 85 } },
             { name: "BMW Sauber 2008", d1: "R. Kubica", d2: "N. Heidfeld", stats: { pilota1: 90, pilota2: 82, strategia: 85, aerodinamica: 86, motore: 88 } },
             { name: "Toro Rosso 2008", d1: "S. Vettel", d2: "S. Bourdais", stats: { pilota1: 92, pilota2: 75, strategia: 80, aerodinamica: 84, motore: 85 } }, 
-
-            // I Disastri
             { name: "McLaren Honda 2015", d1: "F. Alonso", d2: "J. Button", stats: { pilota1: 92, pilota2: 88, strategia: 75, aerodinamica: 78, motore: 20 } }, 
             { name: "Haas 2021", d1: "M. Schumacher", d2: "N. Mazepin", stats: { pilota1: 65, pilota2: 60, strategia: 60, aerodinamica: 40, motore: 50 } },
             { name: "Minardi 2001", d1: "F. Alonso", d2: "T. Marques", stats: { pilota1: 85, pilota2: 60, strategia: 70, aerodinamica: 55, motore: 50 } }, 
             { name: "Williams 2019", d1: "G. Russell", d2: "R. Kubica", stats: { pilota1: 80, pilota2: 65, strategia: 65, aerodinamica: 30, motore: 70 } },
             { name: "Ferrari 2020", d1: "C. Leclerc", d2: "S. Vettel", stats: { pilota1: 92, pilota2: 85, strategia: 70, aerodinamica: 75, motore: 60 } }, 
-
-            // Griglia Moderna Recente
             { name: "McLaren 2023", d1: "L. Norris", d2: "O. Piastri", stats: { pilota1: 90, pilota2: 88, strategia: 85, aerodinamica: 92, motore: 88 } },
             { name: "Alpine 2024", d1: "P. Gasly", d2: "E. Ocon", stats: { pilota1: 84, pilota2: 84, strategia: 65, aerodinamica: 60, motore: 65 } },
             { name: "Mercedes 2023", d1: "L. Hamilton", d2: "G. Russell", stats: { pilota1: 94, pilota2: 88, strategia: 85, aerodinamica: 80, motore: 90 } },
@@ -151,7 +170,15 @@
 
         let currentTeam = null;
         let filledSlots = 0;
-        let totalScore = 0;
+        
+        // Salviamo le statistiche specifiche scelte per la simulazione
+        let chosenStats = {
+            pilota1: 0,
+            pilota2: 0,
+            strategia: 0,
+            aerodinamica: 0,
+            motore: 0
+        };
 
         const slotKeys = ["pilota1", "pilota2", "strategia", "aerodinamica", "motore"];
 
@@ -160,7 +187,6 @@
                 alert("Assegna la scuderia in uno slot prima di pescare di nuovo!");
                 return;
             }
-
             if (teams.length === 0) {
                 alert("Hai finito le squadre nel database!");
                 return;
@@ -177,12 +203,9 @@
                 
                 if (counter > 12) {
                     clearInterval(interval);
-                    
-                    // Seleziona la scuderia e la RIMUOVE dal mazzo
                     const finalIndex = Math.floor(Math.random() * teams.length);
                     currentTeam = teams.splice(finalIndex, 1)[0]; 
 
-                    // MOSTRA IL NOME DELLA SCUDERIA E I PILOTI CHE LA GUIDAVANO
                     document.getElementById("spinner").innerHTML = `
                         <strong style="font-size: 1.5em; color: #ffeb3b;">${currentTeam.name}</strong>
                         <div class="driver-info">Piloti: ${currentTeam.d1} & ${currentTeam.d2}</div>
@@ -203,58 +226,131 @@
             const keyCorrispondente = slotKeys[index];
             const valoreScelto = currentTeam.stats[keyCorrispondente];
             
+            // Salviamo la statistica per il calcolo finale
+            chosenStats[keyCorrispondente] = valoreScelto;
+            
             let testoDaMostrare = "";
-
-            // Se scegliamo un pilota, mostra il nome reale del pilota!
-            if (index === 0) {
-                testoDaMostrare = `${currentTeam.d1} [${currentTeam.name}] (${valoreScelto})`;
-            } else if (index === 1) {
-                testoDaMostrare = `${currentTeam.d2} [${currentTeam.name}] (${valoreScelto})`;
-            } else {
-                testoDaMostrare = `${currentTeam.name} (${valoreScelto})`;
-            }
+            if (index === 0) testoDaMostrare = `${currentTeam.d1} [${currentTeam.name}] (${valoreScelto})`;
+            else if (index === 1) testoDaMostrare = `${currentTeam.d2} [${currentTeam.name}] (${valoreScelto})`;
+            else testoDaMostrare = `${currentTeam.name} (${valoreScelto})`;
             
             slot.querySelector(".slot-value").innerText = testoDaMostrare;
             slot.classList.add("filled");
             
-            totalScore += valoreScelto;
             filledSlots++;
             currentTeam = null;
-            
             document.getElementById("spinner").innerHTML = "Premi <strong>'Pesca Scuderia'</strong> per continuare!";
 
             if (filledSlots === 5) {
                 document.getElementById("spinner").style.display = "none";
                 document.getElementById("spinBtn").style.display = "none";
-                calcolaRisultato();
+                document.getElementById("simulation-area").style.display = "block";
             }
         }
 
-        function calcolaRisultato() {
-            const media = totalScore / 5;
-            let message = "";
+        function avviaSimulazione() {
+            document.getElementById("simBtn").style.display = "none";
+            const logBox = document.getElementById("race-log");
+            logBox.style.display = "block";
+            logBox.innerHTML = "";
+
+            let puntiTotali = 0;
+            let vittorie = 0;
+            let podi = 0;
+            let ritiri = 0;
+
+            const media = (chosenStats.pilota1 + chosenStats.pilota2 + chosenStats.strategia + chosenStats.aerodinamica + chosenStats.motore) / 5;
+            
+            // Difficoltà: il motore basso aumenta drasticamente le probabilità di DNF (Ritiro)
+            const dnfChanceBase = chosenStats.motore < 85 ? (95 - chosenStats.motore) : 2; 
+
+            // Creiamo un delay per simulare gara dopo gara
+            let garaCorrente = 1;
+            
+            const intervalloGare = setInterval(() => {
+                let risultatoTesto = "";
+                let cssClass = "";
+                
+                // 1. Controllo Affidabilità Motore
+                let rollDnf = Math.random() * 100;
+                if (rollDnf < dnfChanceBase) {
+                    risultatoTesto = `Gara ${garaCorrente}: Ritiro (Motore in fumo) 💥`;
+                    cssClass = "log-dnf";
+                    ritiri++;
+                } else {
+                    // 2. Controllo Strategia (Muretto basso = penalità di tempo causali)
+                    let penalitaMuretto = 0;
+                    if (Math.random() * 100 > chosenStats.strategia) {
+                        penalitaMuretto = Math.random() * 15; // Può farti perdere fino a 15 punti performance
+                    }
+
+                    // 3. Calcolo Performance della Gara (Media vettura + Randomness - Errori)
+                    let paceGara = (media * 0.8) + (chosenStats.aerodinamica * 0.1) + (chosenStats.pilota1 * 0.1);
+                    let racePerf = paceGara - penalitaMuretto + (Math.random() * 20 - 5); 
+
+                    // Parametri di Vittoria più severi
+                    if (racePerf >= 96) {
+                        risultatoTesto = `Gara ${garaCorrente}: Vittoria! Dominio Assoluto 🏆 (+25 pts)`;
+                        cssClass = "log-win";
+                        vittorie++; podi++; puntiTotali += 25;
+                    } else if (racePerf >= 90) {
+                        risultatoTesto = `Gara ${garaCorrente}: A Podio! Ottima gara 🍾 (+15 pts)`;
+                        cssClass = "log-podium";
+                        podi++; puntiTotali += 15;
+                    } else if (racePerf >= 80) {
+                        let punti = Math.floor(Math.random() * 8) + 2;
+                        risultatoTesto = `Gara ${garaCorrente}: Zona Punti 🏎️ (+${punti} pts)`;
+                        cssClass = "log-points";
+                        puntiTotali += punti;
+                    } else {
+                        risultatoTesto = `Gara ${garaCorrente}: Fuori dai punti, gara anonima 📉`;
+                        cssClass = "";
+                    }
+                }
+
+                // Aggiungiamo al log a schermo
+                logBox.innerHTML += `<div class="log-entry ${cssClass}">${risultatoTesto}</div>`;
+                logBox.scrollTop = logBox.scrollHeight; // Auto-scroll in basso
+
+                garaCorrente++;
+
+                if (garaCorrente > 24) {
+                    clearInterval(intervalloGare);
+                    mostraVerdettoFinale(media, puntiTotali, vittorie, podi, ritiri);
+                }
+            }, 150); // Simula una gara ogni 150ms
+        }
+
+        function mostraVerdettoFinale(media, punti, vittorie, podi, ritiri) {
+            const verdictDiv = document.getElementById("final-verdict");
+            let title = "";
             let color = "";
 
-            if (media >= 92) {
-                message = `Media Finale: ${media.toFixed(1)}\n🏆 INCREDIBILE! Auto Leggendaria.`;
-                color = "#ffd700"; 
-            } else if (media >= 85) {
-                message = `Media Finale: ${media.toFixed(1)}\n🥇 Ottima stagione! Vinci il Mondiale.`;
-                color = "#4caf50"; 
-            } else if (media >= 75) {
-                message = `Media Finale: ${media.toFixed(1)}\n🥈 Buona auto, lotti per i podi.`;
-                color = "#2196f3"; 
-            } else if (media >= 60) {
-                message = `Media Finale: ${media.toFixed(1)}\n😐 Metà classifica. Lotti per la zona punti.`;
-                color = "#ff9800"; 
+            if (vittorie === 24) {
+                title = "LEGGENDA! La stagione perfetta (24-0) 👽";
+                color = "#ffd700";
+            } else if (punti >= 400) {
+                title = "CAMPIONI DEL MONDO! 🏆🌍";
+                color = "#4caf50";
+            } else if (punti >= 200) {
+                title = "Buona stagione, ma i rivali erano superiori. 🥈";
+                color = "#2196f3";
+            } else if (punti >= 50) {
+                title = "Metà classifica. Lotta continua nel traffico. 😐";
+                color = "#ff9800";
             } else {
-                message = `Media Finale: ${media.toFixed(1)}\n🚜 Disastro totale. La Safety Car andava più forte.`;
-                color = "#f44336"; 
+                title = "DISASTRO. Avete sfiorato il licenziamento di massa. 🚜";
+                color = "#f44336";
             }
 
-            const resultDiv = document.getElementById("result");
-            resultDiv.innerText = message;
-            resultDiv.style.color = color;
+            verdictDiv.style.color = color;
+            verdictDiv.innerHTML = `
+                <br>${title}<br>
+                <span style="font-size: 0.6em; color: #ccc;">
+                    Vittorie: ${vittorie} | Podi: ${podi} | Ritiri: ${ritiri}<br>
+                    Punti Totali: ${punti} | Rating Macchina: ${media.toFixed(1)}
+                </span>
+            `;
         }
     </script>
 </body>
