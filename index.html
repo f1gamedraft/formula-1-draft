@@ -23,12 +23,21 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.5);
         }
         #spinner {
-            font-size: 1.5em;
+            font-size: 1.2em;
             margin: 20px 0;
             padding: 15px;
             background: #2a2a3c;
             border-radius: 8px;
             border: 2px dashed #ffeb3b;
+            min-height: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .stats-preview {
+            color: #ffeb3b;
+            font-size: 0.85em;
+            margin-top: 10px;
         }
         button {
             background-color: #e10600;
@@ -67,33 +76,33 @@
         .slot-value { font-style: italic; color: #ccc; }
         .slot.filled .slot-value { color: #fff; font-style: normal; font-weight: bold; }
         
-        #result { margin-top: 20px; font-size: 1.5em; color: #4caf50; }
+        #result { margin-top: 20px; font-size: 1.5em; font-weight: bold; }
     </style>
 </head>
 <body>
 
     <div class="game-container">
         <h1>F1 24-0 Challenge</h1>
-        <p>Pesca una scuderia e costruisci il team perfetto. Riuscirai a vincere tutte le 24 gare?</p>
+        <p>Pesca una scuderia e costruisci il team perfetto. Riuscirai a vincere il mondiale?</p>
         
         <div id="spinner">Premi "Pesca" per iniziare!</div>
         <button id="spinBtn" onclick="spin()">Pesca Scuderia</button>
 
         <div id="slots">
             <div class="slot" id="slot-0" onclick="selectSlot(0)">
-                <span class="slot-name">Pilota 1</span> <span class="slot-value">Vuoto</span>
+                <span class="slot-name">Pilota 1 (Punta)</span> <span class="slot-value">Vuoto</span>
             </div>
             <div class="slot" id="slot-1" onclick="selectSlot(1)">
-                <span class="slot-name">Pilota 2</span> <span class="slot-value">Vuoto</span>
+                <span class="slot-name">Pilota 2 (Costanza)</span> <span class="slot-value">Vuoto</span>
             </div>
             <div class="slot" id="slot-2" onclick="selectSlot(2)">
-                <span class="slot-name">Team Principal / Strategia</span> <span class="slot-value">Vuoto</span>
+                <span class="slot-name">Muretto & Strategia</span> <span class="slot-value">Vuoto</span>
             </div>
             <div class="slot" id="slot-3" onclick="selectSlot(3)">
                 <span class="slot-name">Aerodinamica (Telaio)</span> <span class="slot-value">Vuoto</span>
             </div>
             <div class="slot" id="slot-4" onclick="selectSlot(4)">
-                <span class="slot-name">Motore e Affidabilità</span> <span class="slot-value">Vuoto</span>
+                <span class="slot-name">Motore & Affidabilità</span> <span class="slot-value">Vuoto</span>
             </div>
         </div>
 
@@ -101,99 +110,24 @@
     </div>
 
     <script>
-        // Il tuo "Database" iniziale (puoi aggiungere quante auto vuoi!)
-        const teams = [
-            { name: "Ferrari 2004", rating: 99 },
-            { name: "Mercedes 2020", rating: 98 },
-            { name: "Red Bull 2023", rating: 98 },
-            { name: "McLaren 1988", rating: 97 },
-            { name: "Williams 1992", rating: 95 },
-            { name: "Brawn GP 2009", rating: 90 },
-            { name: "Ferrari 2020", rating: 65 },
-            { name: "McLaren 2015", rating: 50 }, // Disastro motore Honda
-            { name: "Minardi 2001", rating: 40 },
-            { name: "Haas 2021", rating: 35 }
-        ];
+        // Database Completo
+        let teams = [
+            // Dominatori Assoluti
+            { name: "Ferrari 2004", stats: { pilota1: 99, pilota2: 88, strategia: 96, aerodinamica: 95, motore: 98 } },
+            { name: "Red Bull 2023", stats: { pilota1: 99, pilota2: 85, strategia: 98, aerodinamica: 99, motore: 95 } },
+            { name: "Mercedes 2014", stats: { pilota1: 96, pilota2: 90, strategia: 92, aerodinamica: 88, motore: 99 } },
+            { name: "McLaren 1988", stats: { pilota1: 99, pilota2: 98, strategia: 90, aerodinamica: 95, motore: 97 } },
+            { name: "Williams 1992", stats: { pilota1: 95, pilota2: 85, strategia: 90, aerodinamica: 99, motore: 92 } },
 
-        let currentTeam = null;
-        let filledSlots = 0;
-        let totalScore = 0;
+            // Veloci ma Imperfette
+            { name: "McLaren 2005", stats: { pilota1: 97, pilota2: 88, strategia: 85, aerodinamica: 98, motore: 50 } }, 
+            { name: "Ferrari 2022", stats: { pilota1: 93, pilota2: 86, strategia: 50, aerodinamica: 94, motore: 75 } }, 
+            { name: "Red Bull 2013", stats: { pilota1: 98, pilota2: 82, strategia: 94, aerodinamica: 99, motore: 80 } },
+            { name: "Brawn GP 2009", stats: { pilota1: 92, pilota2: 85, strategia: 96, aerodinamica: 95, motore: 88 } },
+            { name: "Renault 2005", stats: { pilota1: 96, pilota2: 84, strategia: 92, aerodinamica: 93, motore: 90 } },
 
-        function spin() {
-            if (currentTeam) {
-                alert("Assegna la scuderia pescata prima di pescare di nuovo!");
-                return;
-            }
-            
-            const btn = document.getElementById("spinBtn");
-            btn.disabled = true;
-
-            // Effetto finto caricamento (suspense)
-            let counter = 0;
-            const interval = setInterval(() => {
-                const randomVisual = teams[Math.floor(Math.random() * teams.length)].name;
-                document.getElementById("spinner").innerText = randomVisual;
-                counter++;
-                if (counter > 10) {
-                    clearInterval(interval);
-                    // Pescata finale vera
-                    currentTeam = teams[Math.floor(Math.random() * teams.length)];
-                    document.getElementById("spinner").innerHTML = `Hai pescato:<br><strong>${currentTeam.name}</strong><br><small>Scegli dove posizionarla!</small>`;
-                    btn.disabled = false;
-                }
-            }, 100);
-        }
-
-        function selectSlot(index) {
-            if (!currentTeam) {
-                alert("Devi prima pescare una scuderia!");
-                return;
-            }
-            
-            const slot = document.getElementById(`slot-${index}`);
-            
-            // Aggiorna la grafica dello slot
-            slot.querySelector(".slot-value").innerText = currentTeam.name;
-            slot.classList.add("filled");
-            
-            // Aggiungi al punteggio
-            totalScore += currentTeam.rating;
-            filledSlots++;
-            currentTeam = null;
-            
-            document.getElementById("spinner").innerText = "Premi 'Pesca' per la prossima estrazione!";
-
-            // Fine del gioco
-            if (filledSlots === 5) {
-                document.getElementById("spinner").style.display = "none";
-                document.getElementById("spinBtn").style.display = "none";
-                calcolaRisultato();
-            }
-        }
-
-        function calcolaRisultato() {
-            const media = totalScore / 5;
-            let message = "";
-            let color = "";
-
-            if (media >= 92) {
-                message = `Valutazione: ${media.toFixed(1)}. INCREDIBILE! 24-0 Perfetto! 🏆`;
-                color = "#ffd700"; // Oro
-            } else if (media >= 80) {
-                message = `Valutazione: ${media.toFixed(1)}. Ottima stagione, vinci il mondiale ma non tutte le gare. 🏁`;
-                color = "#4caf50"; // Verde
-            } else if (media >= 60) {
-                message = `Valutazione: ${media.toFixed(1)}. Stagione a metà classifica. Lotti per i punti. 😐`;
-                color = "#ff9800"; // Arancione
-            } else {
-                message = `Valutazione: ${media.toFixed(1)}. Un disastro totale. Siete gli zimbelli del paddock. 🚜`;
-                color = "#f44336"; // Rosso
-            }
-
-            const resultDiv = document.getElementById("result");
-            resultDiv.innerText = message;
-            resultDiv.style.color = color;
-        }
-    </script>
-</body>
-</html>
+            // Outsider e Metà Classifica
+            { name: "Force India 2017", stats: { pilota1: 85, pilota2: 84, strategia: 80, aerodinamica: 75, motore: 92 } }, 
+            { name: "Lotus 2012", stats: { pilota1: 94, pilota2: 80, strategia: 82, aerodinamica: 88, motore: 85 } },
+            { name: "Aston Martin 2023", stats: { pilota1: 95, pilota2: 70, strategia: 80, aerodinamica: 88, motore: 85 } },
+            { name: "BMW Sauber 2008", stats
