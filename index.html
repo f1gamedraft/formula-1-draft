@@ -3,40 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>F1 24-0 Challenge - Simulatore Manageriale</title>
+    <title>F1 Manager 24-0</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,400;0,700;1,400&display=swap');
 
         body {
-            font-family: 'Titillium Web', sans-serif;
-            background: linear-gradient(135deg, #0a0a0f 0%, #1a1a24 100%);
-            color: #ffffff;
-            text-align: center;
-            margin: 0;
-            padding: 20px;
-            min-height: 100vh;
+            font-family: 'Titillium Web', sans-serif; background: linear-gradient(135deg, #0a0a0f 0%, #1a1a24 100%);
+            color: #ffffff; text-align: center; margin: 0; padding: 20px; min-height: 100vh;
         }
-        h1 { color: #e10600; text-transform: uppercase; letter-spacing: 2px; text-shadow: 0 0 10px rgba(225, 6, 0, 0.5); }
+        
+        /* Language Selector */
+        .lang-selector {
+            position: absolute; top: 15px; right: 20px; display: flex; gap: 10px; background: rgba(0,0,0,0.5);
+            padding: 8px 12px; border-radius: 20px; border: 1px solid #444; z-index: 10;
+        }
+        .lang-btn { background: none; border: none; font-size: 1.5em; cursor: pointer; transition: transform 0.2s; padding: 0; opacity: 0.5; filter: grayscale(100%); }
+        .lang-btn.active { opacity: 1; filter: none; transform: scale(1.2); }
+        .lang-btn:hover { transform: scale(1.2); opacity: 1; }
+
+        h1 { color: #e10600; text-transform: uppercase; letter-spacing: 2px; text-shadow: 0 0 10px rgba(225, 6, 0, 0.5); margin-top: 40px; }
         .game-container {
-            max-width: 650px; margin: 0 auto; background: rgba(30, 30, 44, 0.8);
-            padding: 25px; border-radius: 15px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.05); position: relative;
+            max-width: 650px; margin: 0 auto; background: rgba(30, 30, 44, 0.8); padding: 25px;
+            border-radius: 15px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5); border: 1px solid rgba(255, 255, 255, 0.05); position: relative;
         }
         
         #spinner {
-            font-size: 1.3em; margin: 20px 0; padding: 20px;
-            background: rgba(42, 42, 60, 0.9); border-radius: 10px;
-            border: 2px solid #ffeb3b; min-height: 80px;
-            display: flex; flex-direction: column; justify-content: center;
+            font-size: 1.3em; margin: 20px 0; padding: 20px; background: rgba(42, 42, 60, 0.9);
+            border-radius: 10px; border: 2px solid #ffeb3b; min-height: 80px; display: flex; flex-direction: column; justify-content: center;
         }
         .driver-info { color: #aaa; font-size: 0.9em; margin-top: 8px; }
         
         button {
-            background: linear-gradient(90deg, #e10600 0%, #ff3b30 100%);
-            color: white; border: none; padding: 15px 30px; font-size: 1.2em;
-            font-weight: bold; font-family: 'Titillium Web', sans-serif;
-            border-radius: 8px; cursor: pointer; transition: transform 0.2s;
-            margin: 5px; text-transform: uppercase;
+            background: linear-gradient(90deg, #e10600 0%, #ff3b30 100%); color: white; border: none; padding: 15px 30px; font-size: 1.2em;
+            font-weight: bold; font-family: 'Titillium Web', sans-serif; border-radius: 8px; cursor: pointer; transition: transform 0.2s; margin: 5px; text-transform: uppercase;
         }
         button:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(225, 6, 0, 0.4); }
         button:disabled { background: #444; color: #888; cursor: not-allowed; transform: none; box-shadow: none; }
@@ -44,18 +43,21 @@
         #btn-jolly { background: linear-gradient(90deg, #9c27b0 0%, #673ab7 100%); display: none; }
         #btn-jolly:hover { box-shadow: 0 5px 15px rgba(156, 39, 176, 0.4); }
 
-        #slots { display: flex; flex-direction: column; gap: 10px; margin-top: 15px; }
+        #slots { display: flex; flex-direction: column; gap: 10px; margin-top: 15px; transition: opacity 0.3s; }
         .slot {
             background: linear-gradient(90deg, rgba(42,42,60,1) 0%, rgba(30,30,44,1) 100%);
-            border: 1px solid #444; padding: 15px 20px; border-radius: 8px;
-            cursor: pointer; display: flex; justify-content: space-between; align-items: center;
+            border: 1px solid #444; padding: 15px 20px; border-radius: 8px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: all 0.3s;
         }
         .slot:hover { border-color: #ffeb3b; }
         .slot.filled { background: linear-gradient(90deg, rgba(225,6,0,0.9) 0%, rgba(180,0,0,0.9) 100%); border-color: #ff3b30; cursor: not-allowed; pointer-events: none; }
-        .slot-name { font-weight: bold; font-size: 1.1em; }
-        .slot-value { font-style: italic; color: #ccc; }
+        .slot-name { font-weight: bold; font-size: 1.1em; transition: opacity 0.2s;}
+        .slot-value { font-style: italic; color: #ccc; transition: opacity 0.2s;}
         .slot.filled .slot-value { color: #fff; font-style: normal; font-weight: bold; }
         
+        /* SISTEMA ANTI-CHEAT INFALLIBILE */
+        #slots.censored .slot { background: #000; border-color: #222; }
+        #slots.censored .slot-name, #slots.censored .slot-value { opacity: 0 !important; visibility: hidden; }
+
         #simulation-area { display: none; margin-top: 30px; }
         .standings-header {
             display: flex; justify-content: center; background: #111; padding: 10px 20px;
@@ -67,9 +69,8 @@
         #race-log::-webkit-scrollbar-thumb { background: #444; border-radius: 4px; }
         
         .race-row {
-            display: flex; justify-content: space-between; background: rgba(0,0,0,0.4);
-            padding: 12px 15px; border-radius: 6px; border-left: 4px solid #444;
-            animation: fadeIn 0.3s ease-in-out; align-items: center;
+            display: flex; justify-content: space-between; background: rgba(0,0,0,0.4); padding: 12px 15px;
+            border-radius: 6px; border-left: 4px solid #444; animation: fadeIn 0.3s ease-in-out; align-items: center;
         }
         @keyframes fadeIn { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: translateX(0); } }
 
@@ -81,17 +82,18 @@
 
         /* MODALS (Pop-up per gli eventi) */
         .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 100;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.90);
+            display: none; justify-content: center; align-items: center; z-index: 100; backdrop-filter: blur(5px);
         }
         .modal-content {
             background: #1e1e2c; padding: 30px; border-radius: 15px; border: 2px solid #ffeb3b;
-            max-width: 500px; text-align: center; box-shadow: 0 0 30px rgba(255, 235, 59, 0.2);
+            max-width: 500px; text-align: center; box-shadow: 0 0 40px rgba(255, 235, 59, 0.3);
         }
-        .modal-content h2 { margin-top: 0; color: #ffeb3b; }
-        .btn-upgrade { background: #2196f3; font-size: 1em; padding: 10px 20px; }
-        .btn-upgrade:hover { background: #1976d2; box-shadow: 0 5px 15px rgba(33, 150, 243, 0.4); }
-        .btn-weather { background: #ff9800; font-size: 1em; padding: 10px 20px; }
+        .modal-content h2 { margin-top: 0; color: #ffeb3b; font-size: 1.8em; }
+        .modal-content p { font-size: 1.2em; margin-bottom: 20px; }
+        .btn-upgrade, .btn-event { font-size: 1em; padding: 12px 20px; width: 100%; margin-bottom: 10px; }
+        .btn-upgrade { background: #2196f3; } .btn-upgrade:hover { background: #1976d2; box-shadow: 0 5px 15px rgba(33, 150, 243, 0.4); }
+        .btn-event { background: #ff9800; } .btn-event:hover { background: #e68a00; box-shadow: 0 5px 15px rgba(255, 152, 0, 0.4); }
 
         #final-standings {
             margin-top: 20px; background: #111; padding: 20px; border-radius: 10px;
@@ -101,78 +103,196 @@
         .championship-table th, .championship-table td { padding: 8px 10px; border-bottom: 1px solid #333; }
         .championship-table .player-row { color: #ffd700; font-weight: bold; background: rgba(255, 215, 0, 0.1); }
         .championship-table .rival-row { color: #aaa; }
-        
         .meteo-log { display: block; font-size: 0.8em; margin-top: 4px; font-style: italic; }
     </style>
 </head>
 <body>
 
+    <div class="lang-selector">
+        <button class="lang-btn active" onclick="setLang('it')" id="lang-it">🇮🇹</button>
+        <button class="lang-btn" onclick="setLang('en')" id="lang-en">🇬🇧</button>
+        <button class="lang-btn" onclick="setLang('es')" id="lang-es">🇪🇸</button>
+        <button class="lang-btn" onclick="setLang('fr')" id="lang-fr">🇫🇷</button>
+    </div>
+
+    <!-- OVERLAYS PER EVENTI -->
     <div class="modal-overlay" id="modal-upgrade">
         <div class="modal-content">
-            <h2>🛠️ Pausa Estiva! Sviluppi Vettura</h2>
-            <p>Siamo a metà campionato. I tuoi ingegneri hanno un pacchetto di aggiornamenti pronto. Dove vuoi investire?</p>
-            <button class="btn-upgrade" onclick="applicaUpgrade('aerodinamica')">💨 +5 Aerodinamica</button>
-            <button class="btn-upgrade" onclick="applicaUpgrade('motore')">⚙️ +5 Motore</button>
-            <button class="btn-upgrade" onclick="applicaUpgrade('strategia')">🎧 +5 Strategia</button>
+            <h2 id="upg-title">🛠️ Pausa Estiva!</h2>
+            <p id="upg-desc">Siamo a metà campionato. Dove investi gli aggiornamenti?</p>
+            <button class="btn-upgrade" onclick="applicaUpgrade('aerodinamica')" id="upg-aero">💨 +5 Aerodinamica</button>
+            <button class="btn-upgrade" onclick="applicaUpgrade('motore')" id="upg-eng">⚙️ +5 Motore</button>
+            <button class="btn-upgrade" onclick="applicaUpgrade('strategia')" id="upg-strat">🎧 +5 Strategia</button>
         </div>
     </div>
 
-    <div class="modal-overlay" id="modal-meteo">
+    <div class="modal-overlay" id="modal-evento">
         <div class="modal-content">
-            <h2>🌧️ Pioggia Improvvisa!</h2>
-            <p>Il tracciato si sta allagando rapidamente. Devi prendere una decisione in una frazione di secondo!</p>
-            <button class="btn-weather" onclick="risolviMeteo('muretto')">🎧 Segui la Strategia del Muretto</button>
-            <button class="btn-weather" onclick="risolviMeteo('pilota')">🏎️ Lascia decidere al 1° Pilota</button>
+            <h2 id="evento-titolo">Titolo</h2>
+            <p id="evento-desc">Descrizione</p>
+            <button class="btn-event" id="btn-evento-1" onclick="risolviEvento(1)">Opz 1</button>
+            <button class="btn-event" id="btn-evento-2" onclick="risolviEvento(2)">Opz 2</button>
         </div>
     </div>
 
+    <!-- GIOCO PRINCIPALE -->
     <div class="game-container">
-        <h1>🏁 F1 Manager 24-0 🏁</h1>
-        <p>Crea il tuo Dream Team e affronta eventi imprevisti. Hai a disposizione <strong>1 Jolly</strong> per scartare un'auto!</p>
+        <h1 id="main-title">🏁 F1 Manager 24-0 🏁</h1>
+        <p id="main-sub">Crea il tuo Dream Team! Hai a disposizione <strong>1 Jolly</strong> per scartare un'auto!</p>
         
-        <div id="spinner">Premi "Pesca Scuderia" per iniziare il Draft!</div>
+        <div id="spinner" data-i18n="spin_start">Premi "Pesca Scuderia" per iniziare!</div>
         <div>
-            <button id="spinBtn" onclick="spin()">🎲 Pesca Scuderia</button>
-            <button id="btn-jolly" onclick="usaJolly()">🔄 Usa Jolly</button>
+            <button id="spinBtn" onclick="spin()" data-i18n="btn_spin">🎲 Pesca Scuderia</button>
+            <button id="btn-jolly" onclick="usaJolly()" data-i18n="btn_jolly">🔄 Usa Jolly</button>
         </div>
 
         <div id="slots">
-            <div class="slot" id="slot-0" onclick="selectSlot(0)"><span class="slot-name">🏎️ 1° Pilota</span><span class="slot-value">Vuoto</span></div>
-            <div class="slot" id="slot-1" onclick="selectSlot(1)"><span class="slot-name">🏁 2° Pilota</span><span class="slot-value">Vuoto</span></div>
-            <div class="slot" id="slot-2" onclick="selectSlot(2)"><span class="slot-name">🎧 Muretto & Strat.</span><span class="slot-value">Vuoto</span></div>
-            <div class="slot" id="slot-3" onclick="selectSlot(3)"><span class="slot-name">💨 Aerodinamica</span><span class="slot-value">Vuoto</span></div>
-            <div class="slot" id="slot-4" onclick="selectSlot(4)"><span class="slot-name">⚙️ Motore & Affid.</span><span class="slot-value">Vuoto</span></div>
+            <div class="slot" id="slot-0" onclick="selectSlot(0)"><span class="slot-name" data-i18n="slot1">🏎️ 1° Pilota</span><span class="slot-value" data-i18n="empty">Vuoto</span></div>
+            <div class="slot" id="slot-1" onclick="selectSlot(1)"><span class="slot-name" data-i18n="slot2">🏁 2° Pilota</span><span class="slot-value" data-i18n="empty">Vuoto</span></div>
+            <div class="slot" id="slot-2" onclick="selectSlot(2)"><span class="slot-name" data-i18n="slot3">🎧 Muretto & Strat.</span><span class="slot-value" data-i18n="empty">Vuoto</span></div>
+            <div class="slot" id="slot-3" onclick="selectSlot(3)"><span class="slot-name" data-i18n="slot4">💨 Aerodinamica</span><span class="slot-value" data-i18n="empty">Vuoto</span></div>
+            <div class="slot" id="slot-4" onclick="selectSlot(4)"><span class="slot-name" data-i18n="slot5">⚙️ Motore & Affid.</span><span class="slot-value" data-i18n="empty">Vuoto</span></div>
         </div>
 
         <div id="simulation-area">
-            <button id="simBtn" onclick="avviaSimulazione()">🚦 Spegni i semafori!</button>
+            <button id="simBtn" onclick="avviaSimulazione()" data-i18n="btn_sim">🚦 Spegni i semafori!</button>
             <div class="standings-header" id="live-standings" style="display:none;">
-                <span>I Tuoi Punti: <span id="pts-player">0</span> 🏆</span>
+                <span data-i18n="live_pts">I Tuoi Punti:</span> &nbsp;<span id="pts-player">0</span> 🏆
             </div>
             <div id="race-log"></div>
 
             <div id="final-standings">
-                <h2 id="verdict-title">Classifica Finale Costruttori</h2>
+                <h2 id="verdict-title" data-i18n="final_title">Classifica Finale Costruttori</h2>
                 <table class="championship-table">
-                    <thead><tr><th>Pos</th><th>Scuderia</th><th>Punti</th></tr></thead>
+                    <thead><tr><th data-i18n="th_pos">Pos</th><th data-i18n="th_team">Scuderia</th><th data-i18n="th_pts">Punti</th></tr></thead>
                     <tbody id="championship-body"></tbody>
                 </table>
                 <p id="verdict-subtitle" style="margin-top: 15px; color: #ccc; font-style: italic;"></p>
-                <button onclick="location.reload()" style="margin-top: 20px; background: #4caf50;">🔄 Gioca di Nuovo</button>
+                <button onclick="location.reload()" style="margin-top: 20px; background: #4caf50;" data-i18n="btn_replay">🔄 Gioca di Nuovo</button>
             </div>
         </div>
     </div>
 
     <script>
-        // Il Database compatto (include leggende e catorci)
+        // TRADUZIONI (i18n)
+        const dict = {
+            it: {
+                main_title: "🏁 F1 Manager 24-0 🏁", main_sub: "Crea il tuo Dream Team! Hai a disposizione <strong>1 Jolly</strong> per scartare un'auto!",
+                spin_start: "Premi 'Pesca Scuderia' per iniziare!", btn_spin: "🎲 Pesca Scuderia", btn_jolly: "🔄 Usa Jolly",
+                slot1: "🏎️ 1° Pilota", slot2: "🏁 2° Pilota", slot3: "🎧 Muretto & Strat.", slot4: "💨 Aerodinamica", slot5: "⚙️ Motore & Affid.",
+                empty: "Vuoto", alert_assign: "Assegna la scuderia prima di pescare di nuovo!", alert_empty: "Hai finito le squadre!",
+                spin_jolly: "<em>Jolly utilizzato! Ripesco...</em>", spin_continue: "Premi <strong>'Pesca Scuderia'</strong> per continuare!",
+                select_slot: "SELEZIONA UNO SLOT", pilots: "PILOTI:", btn_sim: "🚦 Spegni i semafori!", live_pts: "I Tuoi Punti:",
+                final_title: "Classifica Finale Costruttori", th_pos: "Pos", th_team: "Scuderia", th_pts: "Punti", btn_replay: "🔄 Gioca di Nuovo",
+                upg_title: "🛠️ Pausa Estiva!", upg_desc: "Siamo a metà campionato. Dove investi gli aggiornamenti?", upg_aero: "💨 +5 Aerodinamica", upg_eng: "⚙️ +5 Motore", upg_strat: "🎧 +5 Strategia",
+                dnf: "RITIRO", p1: "1° POSTO", p_pod: "° POSTO 🥈", p_pts: "° POSTO 🏎️", p_out: "° POSTO 📉", my_team: "IL TUO TEAM",
+                v_win_t: "🏆 CAMPIONI DEL MONDO 🏆", v_win_s: "Manager dell'anno! Hai saputo reagire perfettamente sotto pressione.",
+                v_pod_t: "🥈 A UN PASSO DALLA GLORIA", v_pod_s: "Grande stagione, ma qualche imprevisto in pista ti ha fatto perdere punti chiave.",
+                v_los_t: "🚜 STAGIONE FALLIMENTARE", v_los_s: "Decisioni errate e catorci meccanici. Il CDA ha richiesto le tue dimissioni immediate.",
+                events: [
+                    { title: "🌧️ Diluvio Improvviso!", desc: "La pista è allagata. Decisione rapida!", b1: "🎧 Strategia Muretto", s1: "strategia", b2: "🏎️ 1° Pilota", s2: "pilota1", w: "Geniale sotto la pioggia! Vantaggio preso.", l: "Disastro sul bagnato! Affondiamo." },
+                    { title: "⚔️ Tensione nel Team!", desc: "I piloti lottano ruota a ruota. Chi favorisci?", b1: "🏎️ 1° Pilota", s1: "pilota1", b2: "🏁 2° Pilota", s2: "pilota2", w: "Ordine gestito bene, voliamo!", l: "Contatto! Danni e tempo perso ai box." },
+                    { title: "🔥 Allarme Motore!", desc: "Temperature al limite. Cosa fai in scia?", b1: "⚙️ Spingi al massimo", s1: "motore", b2: "🎧 Gestisci (Muretto)", s2: "strategia", w: "Azzardo ripagato! Bel sorpasso.", l: "Fumata bianca o crollo del passo." },
+                    { title: "💥 Detriti in pista!", desc: "Ala danneggiata. Rientri o resti fuori?", b1: "💨 Continua (Telaio)", s1: "aerodinamica", b2: "🎧 Box box (Strategia)", s2: "strategia", w: "Scelta perfetta. Nessun tempo perso.", l: "Scelta pessima. Bilanciamento distrutto." }
+                ]
+            },
+            en: {
+                main_title: "🏁 F1 Manager 24-0 🏁", main_sub: "Create your Dream Team! You have <strong>1 Joker</strong> to redraw a car!",
+                spin_start: "Press 'Draft Team' to start!", btn_spin: "🎲 Draft Team", btn_jolly: "🔄 Use Joker",
+                slot1: "🏎️ 1st Driver", slot2: "🏁 2nd Driver", slot3: "🎧 Pit Wall & Strat", slot4: "💨 Aerodynamics", slot5: "⚙️ Engine & Rel.",
+                empty: "Empty", alert_assign: "Assign the car before drawing again!", alert_empty: "No more teams!",
+                spin_jolly: "<em>Joker used! Redrawing...</em>", spin_continue: "Press <strong>'Draft Team'</strong> to continue!",
+                select_slot: "SELECT A SLOT", pilots: "DRIVERS:", btn_sim: "🚦 Lights Out!", live_pts: "Your Points:",
+                final_title: "Final Constructors' Standings", th_pos: "Pos", th_team: "Team", th_pts: "Pts", btn_replay: "🔄 Play Again",
+                upg_title: "🛠️ Summer Break!", upg_desc: "Halfway through the season. Where to invest?", upg_aero: "💨 +5 Aero", upg_eng: "⚙️ +5 Engine", upg_strat: "🎧 +5 Strategy",
+                dnf: "DNF", p1: "1st PLACE", p_pod: "nd/rd PLACE 🥈", p_pts: "th PLACE 🏎️", p_out: "th PLACE 📉", my_team: "YOUR TEAM",
+                v_win_t: "🏆 WORLD CHAMPIONS 🏆", v_win_s: "Manager of the year! Perfect decisions under pressure.",
+                v_pod_t: "🥈 SO CLOSE", v_pod_s: "Great season, but some unexpected events cost you key points.",
+                v_los_t: "🚜 TERRIBLE SEASON", v_los_s: "Bad decisions and awful cars. You're fired.",
+                events: [
+                    { title: "🌧️ Sudden Rain!", desc: "Track is flooding. Quick decision!", b1: "🎧 Pit Wall Call", s1: "strategia", b2: "🏎️ Trust 1st Driver", s2: "pilota1", w: "Genius in the rain! Huge advantage.", l: "Disaster in the wet! Sinking fast." },
+                    { title: "⚔️ Team Tension!", desc: "Drivers are wheel-to-wheel. Who do you favor?", b1: "🏎️ 1st Driver", s1: "pilota1", b2: "🏁 2nd Driver", s2: "pilota2", w: "Orders managed perfectly!", l: "Crash! Damage and lost time." },
+                    { title: "🔥 Engine Warning!", desc: "Temps are critical in the slipstream.", b1: "⚙️ Push to the limit", s1: "motore", b2: "🎧 Manage Pace", s2: "strategia", w: "Gamble pays off! Nice overtake.", l: "White smoke or pace drop." },
+                    { title: "💥 Debris!", desc: "Front wing damaged. Pit or stay out?", b1: "💨 Stay out (Aero)", s1: "aerodinamica", b2: "🎧 Box Box (Strategy)", s2: "strategia", w: "Perfect call. No time lost.", l: "Terrible choice. Balance ruined." }
+                ]
+            },
+            es: {
+                main_title: "🏁 F1 Manager 24-0 🏁", main_sub: "¡Crea tu Dream Team! ¡Tienes <strong>1 Comodín</strong> para descartar un coche!",
+                spin_start: "¡Pulsa 'Robar Equipo' para empezar!", btn_spin: "🎲 Robar Equipo", btn_jolly: "🔄 Usar Comodín",
+                slot1: "🏎️ 1er Piloto", slot2: "🏁 2do Piloto", slot3: "🎧 Muro y Estrat.", slot4: "💨 Aerodinámica", slot5: "⚙️ Motor y Fiab.",
+                empty: "Vacío", alert_assign: "¡Asigna el coche antes de volver a robar!", alert_empty: "¡No quedan equipos!",
+                spin_jolly: "<em>¡Comodín usado! Robando...</em>", spin_continue: "¡Pulsa <strong>'Robar Equipo'</strong> para seguir!",
+                select_slot: "SELECCIONA UN ESPACIO", pilots: "PILOTOS:", btn_sim: "🚦 ¡Apaga el semáforo!", live_pts: "Tus Puntos:",
+                final_title: "Clasificación Final Constructores", th_pos: "Pos", th_team: "Escudería", th_pts: "Puntos", btn_replay: "🔄 Jugar de Nuevo",
+                upg_title: "🛠️ ¡Pausa de Verano!", upg_desc: "Mitad de temporada. ¿Dónde inviertes?", upg_aero: "💨 +5 Aero", upg_eng: "⚙️ +5 Motor", upg_strat: "🎧 +5 Estrategia",
+                dnf: "ABANDONO", p1: "1er PUESTO", p_pod: "º PUESTO 🥈", p_pts: "º PUESTO 🏎️", p_out: "º PUESTO 📉", my_team: "TU EQUIPO",
+                v_win_t: "🏆 CAMPEONES DEL MUNDO 🏆", v_win_s: "¡Mánager del año! Decisiones perfectas bajo presión.",
+                v_pod_t: "🥈 A UN PASO DE LA GLORIA", v_pod_s: "Gran temporada, pero algunos imprevistos costaron caro.",
+                v_los_t: "🚜 TEMPORADA DESASTROSA", v_los_s: "Malas decisiones y coches lentos. Estás despedido.",
+                events: [
+                    { title: "🌧️ ¡Lluvia Torrencial!", desc: "Pista inundada. ¡Decisión rápida!", b1: "🎧 Estrategia Muro", s1: "strategia", b2: "🏎️ Confiar 1er Piloto", s2: "pilota1", w: "¡Genial bajo la lluvia! Gran ventaja.", l: "¡Desastre en mojado! Nos hundimos." },
+                    { title: "⚔️ ¡Tensión en el equipo!", desc: "Pilotos rueda a rueda. ¿A quién favoreces?", b1: "🏎️ 1er Piloto", s1: "pilota1", b2: "🏁 2do Piloto", s2: "pilota2", w: "¡Órdenes perfectas, volamos!", l: "¡Toque! Daños y tiempo perdido." },
+                    { title: "🔥 ¡Alarma de Motor!", desc: "Temperaturas al límite. ¿Qué haces?", b1: "⚙️ Empujar al máximo", s1: "motore", b2: "🎧 Gestionar Ritmo", s2: "strategia", w: "¡Riesgo pagado! Gran adelantamiento.", l: "Humo blanco o pérdida de ritmo." },
+                    { title: "💥 ¡Escombros!", desc: "Alerón dañado. ¿Parar o seguir?", b1: "💨 Seguir en pista", s1: "aerodinamica", b2: "🎧 Box Box (Estrategia)", s2: "strategia", w: "Elección perfecta. Sin tiempo perdido.", l: "Pésima elección. Balance destruido." }
+                ]
+            },
+            fr: {
+                main_title: "🏁 F1 Manager 24-0 🏁", main_sub: "Créez votre Dream Team ! Vous avez <strong>1 Joker</strong> pour défausser une voiture !",
+                spin_start: "Appuyez sur 'Tirer Équipe' pour commencer!", btn_spin: "🎲 Tirer Équipe", btn_jolly: "🔄 Utiliser Joker",
+                slot1: "🏎️ 1er Pilote", slot2: "🏁 2ème Pilote", slot3: "🎧 Muret & Strat.", slot4: "💨 Aérodynamique", slot5: "⚙️ Moteur & Fiab.",
+                empty: "Vide", alert_assign: "Assignez la voiture avant de retirer!", alert_empty: "Plus d'équipes!",
+                spin_jolly: "<em>Joker utilisé ! Tirage...</em>", spin_continue: "Appuyez sur <strong>'Tirer Équipe'</strong> pour continuer!",
+                select_slot: "SÉLECTIONNEZ UNE PLACE", pilots: "PILOTES:", btn_sim: "🚦 Extinction des feux!", live_pts: "Vos Points:",
+                final_title: "Classement Final Constructeurs", th_pos: "Pos", th_team: "Écurie", th_pts: "Pts", btn_replay: "🔄 Rejouer",
+                upg_title: "🛠️ Pause Estivale !", upg_desc: "Mi-saison. Où investir les améliorations ?", upg_aero: "💨 +5 Aéro", upg_eng: "⚙️ +5 Moteur", upg_strat: "🎧 +5 Stratégie",
+                dnf: "ABANDON", p1: "1ère PLACE", p_pod: "e PLACE 🥈", p_pts: "e PLACE 🏎️", p_out: "e PLACE 📉", my_team: "VOTRE ÉQUIPE",
+                v_win_t: "🏆 CHAMPIONS DU MONDE 🏆", v_win_s: "Manager de l'année ! Décisions parfaites sous pression.",
+                v_pod_t: "🥈 SI PROCHE", v_pod_s: "Belle saison, mais des imprévus vous coûtent cher.",
+                v_los_t: "🚜 SAISON DÉSASTREUSE", v_los_s: "Mauvais choix et voitures lentes. Vous êtes viré.",
+                events: [
+                    { title: "🌧️ Pluie Soudaine !", desc: "Piste inondée. Décision rapide !", b1: "🎧 Stratégie Muret", s1: "strategia", b2: "🏎️ Confiance 1er Pilote", s2: "pilota1", w: "Génial sous la pluie ! Gros avantage.", l: "Désastre sur le mouillé ! On coule." },
+                    { title: "⚔️ Tension d'équipe !", desc: "Pilotes roue contre roue. Qui favoriser ?", b1: "🏎️ 1er Pilote", s1: "pilota1", b2: "🏁 2ème Pilote", s2: "pilota2", w: "Consignes parfaites, on vole !", l: "Accrochage ! Dégâts et temps perdu." },
+                    { title: "🔥 Alarme Moteur !", desc: "Températures critiques. Que faire ?", b1: "⚙️ Pousser à fond", s1: "motore", b2: "🎧 Gérer le rythme", s2: "strategia", w: "Pari gagnant ! Beau dépassement.", l: "Fumée blanche ou perte de rythme." },
+                    { title: "💥 Débris !", desc: "Aileron endommagé. Arrêt ou on continue ?", b1: "💨 Continuer (Aéro)", s1: "aerodinamica", b2: "🎧 Box Box (Stratégie)", s2: "strategia", w: "Choix parfait. Aucun temps perdu.", l: "Mauvais choix. Équilibre détruit." }
+                ]
+            }
+        };
+
+        let currentLang = 'it';
+
+        function setLang(lang) {
+            currentLang = lang;
+            document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById('lang-'+lang).classList.add('active');
+            
+            const t = dict[lang];
+            document.getElementById("main-title").innerHTML = t.main_title;
+            document.getElementById("main-sub").innerHTML = t.main_sub;
+            if(!currentTeam && filledSlots === 0) document.getElementById("spinner").innerHTML = t.spin_start;
+            document.getElementById("spinBtn").innerHTML = t.btn_spin;
+            document.getElementById("btn-jolly").innerHTML = t.btn_jolly;
+            document.getElementById("simBtn").innerHTML = t.btn_sim;
+            document.getElementById("verdict-title").innerHTML = t.final_title;
+            
+            document.querySelectorAll("[data-i18n]").forEach(el => {
+                let key = el.getAttribute("data-i18n");
+                if(t[key] && !el.parentElement.classList.contains('filled')) el.innerHTML = t[key];
+            });
+
+            document.getElementById("upg-title").innerHTML = t.upg_title;
+            document.getElementById("upg-desc").innerHTML = t.upg_desc;
+            document.getElementById("upg-aero").innerHTML = t.upg_aero;
+            document.getElementById("upg-eng").innerHTML = t.upg_eng;
+            document.getElementById("upg-strat").innerHTML = t.upg_strat;
+        }
+
+        // DATABASE TEAM 
         let teams = [
-            // Dominatori
             { name: "Ferrari 2004", d1: "M. Schumacher", d2: "R. Barrichello", stats: { pilota1: 99, pilota2: 93, strategia: 99, aerodinamica: 99, motore: 99 } },
             { name: "McLaren 1988", d1: "A. Senna", d2: "A. Prost", stats: { pilota1: 99, pilota2: 99, strategia: 94, aerodinamica: 98, motore: 98 } },
             { name: "Mercedes 2020", d1: "L. Hamilton", d2: "V. Bottas", stats: { pilota1: 99, pilota2: 86, strategia: 97, aerodinamica: 99, motore: 99 } },
             { name: "Red Bull 2023", d1: "M. Verstappen", d2: "S. Perez", stats: { pilota1: 99, pilota2: 85, strategia: 98, aerodinamica: 99, motore: 95 } },
             { name: "Williams 1992", d1: "N. Mansell", d2: "R. Patrese", stats: { pilota1: 96, pilota2: 86, strategia: 94, aerodinamica: 99, motore: 95 } },
-            // Medi e Outsider
             { name: "Renault 2005", d1: "F. Alonso", d2: "G. Fisichella", stats: { pilota1: 98, pilota2: 84, strategia: 96, aerodinamica: 97, motore: 94 } },
             { name: "Brawn GP 2009", d1: "J. Button", d2: "R. Barrichello", stats: { pilota1: 92, pilota2: 85, strategia: 96, aerodinamica: 95, motore: 88 } },
             { name: "Ferrari 2019", d1: "C. Leclerc", d2: "S. Vettel", stats: { pilota1: 94, pilota2: 88, strategia: 75, aerodinamica: 88, motore: 99 } },
@@ -180,7 +300,6 @@
             { name: "Aston Martin 2023", d1: "F. Alonso", d2: "L. Stroll", stats: { pilota1: 95, pilota2: 70, strategia: 80, aerodinamica: 88, motore: 85 } },
             { name: "Lotus 2012", d1: "K. Räikkönen", d2: "R. Grosjean", stats: { pilota1: 94, pilota2: 82, strategia: 86, aerodinamica: 91, motore: 87 } },
             { name: "Williams 2014", d1: "V. Bottas", d2: "F. Massa", stats: { pilota1: 90, pilota2: 84, strategia: 76, aerodinamica: 78, motore: 99 } },
-            // Catorci e Disastri
             { name: "McLaren Honda 2017", d1: "F. Alonso", d2: "S. Vandoorne", stats: { pilota1: 95, pilota2: 75, strategia: 75, aerodinamica: 85, motore: 10 } },
             { name: "Ferrari 2020", d1: "C. Leclerc", d2: "S. Vettel", stats: { pilota1: 93, pilota2: 74, strategia: 65, aerodinamica: 70, motore: 68 } },
             { name: "Haas 2021", d1: "M. Schumacher", d2: "N. Mazepin", stats: { pilota1: 65, pilota2: 60, strategia: 60, aerodinamica: 40, motore: 50 } },
@@ -202,23 +321,16 @@
             { gp: "Las Vegas", flag: "🇺🇸" }, { gp: "Qatar", flag: "🇶🇦" }, { gp: "Abu Dhabi", flag: "🇦🇪" }
         ];
 
-        let currentTeam = null;
-        let filledSlots = 0;
-        let jollyUsato = false;
+        let currentTeam = null; let filledSlots = 0; let jollyUsato = false;
         let chosenStats = { pilota1: 0, pilota2: 0, strategia: 0, aerodinamica: 0, motore: 0 };
         const slotKeys = ["pilota1", "pilota2", "strategia", "aerodinamica", "motore"];
 
-        // Variabili Simulazione
-        let championship = [];
-        let garaIndex = 0;
-        let simTimer;
-        let meteoAttivo = false;
-        let meteoBonusPlayer = 0;
-        let meteoLogText = "";
+        let championship = []; let garaIndex = 0; let simTimer;
+        let eventoAttivo = false; let eventoAttuale = null; let bonusEventoPlayer = 0; let logEventoText = "";
 
         function spin() {
-            if (currentTeam) { alert("Assegna la scuderia prima di pescare di nuovo!"); return; }
-            if (teams.length === 0) return;
+            if (currentTeam) { alert(dict[currentLang].alert_assign); return; }
+            if (teams.length === 0) { alert(dict[currentLang].alert_empty); return; }
             
             document.getElementById("spinBtn").disabled = true;
             document.getElementById("btn-jolly").style.display = "none";
@@ -228,19 +340,15 @@
                 const randomIndex = Math.floor(Math.random() * teams.length);
                 document.getElementById("spinner").innerText = teams[randomIndex].name;
                 counter++;
-                
                 if (counter > 15) {
                     clearInterval(interval);
-                    const finalIndex = Math.floor(Math.random() * teams.length);
-                    currentTeam = teams.splice(finalIndex, 1)[0]; 
-
+                    currentTeam = teams.splice(Math.floor(Math.random() * teams.length), 1)[0]; 
                     document.getElementById("spinner").innerHTML = `
                         <strong style="font-size: 1.5em; color: #ffeb3b; text-transform: uppercase;">${currentTeam.name}</strong>
-                        <div class="driver-info">PILOTI: ${currentTeam.d1} & ${currentTeam.d2}</div>
-                        <small style="display:block; margin-top:10px;">SELEZIONA UNO SLOT</small>
+                        <div class="driver-info">${dict[currentLang].pilots} ${currentTeam.d1} & ${currentTeam.d2}</div>
+                        <small style="display:block; margin-top:10px;">${dict[currentLang].select_slot}</small>
                     `;
                     document.getElementById("spinBtn").disabled = false;
-                    
                     if(!jollyUsato) document.getElementById("btn-jolly").style.display = "inline-block";
                 }
             }, 60);
@@ -248,30 +356,25 @@
 
         function usaJolly() {
             if (jollyUsato || !currentTeam) return;
-            jollyUsato = true;
-            currentTeam = null; // Scarta l'auto
+            jollyUsato = true; currentTeam = null; 
             document.getElementById("btn-jolly").style.display = "none";
-            document.getElementById("spinner").innerHTML = "<em>Jolly utilizzato! Ripesco l'auto...</em>";
+            document.getElementById("spinner").innerHTML = dict[currentLang].spin_jolly;
             spin();
         }
 
         function selectSlot(index) {
             if (!currentTeam) return;
-            
-            const slot = document.getElementById(`slot-${index}`);
-            const key = slotKeys[index];
-            const val = currentTeam.stats[key];
-            
+            const key = slotKeys[index]; const val = currentTeam.stats[key];
             chosenStats[key] = val;
             
             let testo = index === 0 ? `${currentTeam.d1} (${val})` : index === 1 ? `${currentTeam.d2} (${val})` : `${currentTeam.name} (${val})`;
+            let slot = document.getElementById(`slot-${index}`);
             slot.querySelector(".slot-value").innerText = testo;
             slot.classList.add("filled");
             
-            filledSlots++;
-            currentTeam = null;
+            filledSlots++; currentTeam = null;
             document.getElementById("btn-jolly").style.display = "none";
-            document.getElementById("spinner").innerHTML = "Premi <strong>'Pesca Scuderia'</strong> per continuare!";
+            document.getElementById("spinner").innerHTML = dict[currentLang].spin_continue;
 
             if (filledSlots === 5) {
                 document.getElementById("spinner").style.display = "none";
@@ -281,12 +384,18 @@
             }
         }
 
+        // SISTEMA CENSURA STATISTICHE
+        function toggleCensura(attiva) {
+            const slotsDiv = document.getElementById("slots");
+            if (attiva) slotsDiv.classList.add("censored");
+            else slotsDiv.classList.remove("censored");
+        }
+
         function avviaSimulazione() {
             document.getElementById("simBtn").style.display = "none";
             document.getElementById("live-standings").style.display = "flex";
             
-            championship.push({ id: 'player', name: 'IL TUO TEAM', pts: 0, stats: chosenStats, isPlayer: true });
-            
+            championship.push({ id: 'player', name: dict[currentLang].my_team, pts: 0, stats: chosenStats, isPlayer: true });
             let dbCopy = [...teams];
             for(let i=0; i<9; i++) {
                 if(dbCopy.length > 0) {
@@ -298,153 +407,130 @@
         }
 
         function loopGare() {
-            // Controllo Upgrade Mid-Season
             if (garaIndex === 12 && !document.getElementById("modal-upgrade").dataset.fatto) {
+                toggleCensura(true); // Nasconde totalmente i numeri!
                 document.getElementById("modal-upgrade").style.display = "flex";
-                return; // Pausa
+                return;
             }
 
-            // Controllo Meteo (15% di chance)
-            if (garaIndex > 0 && garaIndex !== 12 && Math.random() < 0.15 && !meteoAttivo) {
-                meteoAttivo = true;
-                document.getElementById("modal-meteo").style.display = "flex";
-                return; // Pausa per decisione
-            }
+            if (garaIndex > 0 && garaIndex !== 12 && Math.random() < 0.20 && !eventoAttivo) {
+                eventoAttivo = true;
+                eventoAttuale = dict[currentLang].events[Math.floor(Math.random() * dict[currentLang].events.length)];
+                
+                document.getElementById("evento-titolo").innerText = eventoAttuale.title;
+                document.getElementById("evento-desc").innerText = eventoAttuale.desc;
+                document.getElementById("btn-evento-1").innerText = eventoAttuale.b1;
+                document.getElementById("btn-evento-2").innerText = eventoAttuale.b2;
 
+                toggleCensura(true); // Nasconde totalmente i numeri!
+                document.getElementById("modal-evento").style.display = "flex";
+                return;
+            }
             eseguiSingolaGara();
         }
 
         function applicaUpgrade(stat) {
-            chosenStats[stat] += 5; // Aggiunge 5 al giocatore
+            chosenStats[stat] += 5; 
             document.getElementById("modal-upgrade").dataset.fatto = "true";
             document.getElementById("modal-upgrade").style.display = "none";
+            toggleCensura(false); // Riaccende i numeri
             
             let slotId = stat === 'aerodinamica' ? 3 : stat === 'motore' ? 4 : 2;
             let el = document.getElementById(`slot-${slotId}`).querySelector(".slot-value");
-            el.innerText += " (+5 UPGRADE)";
-            el.style.color = "#4caf50";
-            
-            loopGare(); // Riprende
+            el.innerText += " (+5 R&D)"; el.style.color = "#4caf50";
+            loopGare(); 
         }
 
-        function risolviMeteo(scelta) {
-            document.getElementById("modal-meteo").style.display = "none";
-            let statUsata = scelta === 'muretto' ? chosenStats.strategia : chosenStats.pilota1;
-            let dado = Math.random() * 100;
+        function risolviEvento(scelta) {
+            document.getElementById("modal-evento").style.display = "none";
+            toggleCensura(false); // Riaccende i numeri
 
-            if (statUsata > dado) {
-                meteoBonusPlayer = 15; // Genialata
-                meteoLogText = "<span class='meteo-log' style='color:#4caf50'>[Meteo] Scelta geniale sotto la pioggia! Vantaggio accumulato.</span>";
+            // Il nome della stat in inglese e italiano differisce, quindi mappiamo tramite l'oggetto evento originale
+            let statKey = scelta === 1 ? dict['it'].events.find(e => e.title.includes(eventoAttuale.title.substring(0,5))).s1 
+                                       : dict['it'].events.find(e => e.title.includes(eventoAttuale.title.substring(0,5))).s2;
+            
+            let valoreStat = chosenStats[statKey];
+            if (valoreStat > (Math.random() * 100)) {
+                bonusEventoPlayer = 15; logEventoText = `<span class='meteo-log' style='color:#4caf50'>[!] ${eventoAttuale.w}</span>`;
             } else {
-                meteoBonusPlayer = -20; // Disastro
-                meteoLogText = "<span class='meteo-log' style='color:#e10600'>[Meteo] Errore clamoroso! La vettura affonda in classifica.</span>";
+                bonusEventoPlayer = -20; logEventoText = `<span class='meteo-log' style='color:#e10600'>[!] ${eventoAttuale.l}</span>`;
             }
-            loopGare(); // Riprende
+            loopGare();
         }
 
         function eseguiSingolaGara() {
             const gp = calendario[garaIndex];
             const pointsSystem = [25, 18, 15, 12, 10, 8, 6, 4, 2, 1];
-            
             let raceResults = [];
             championship.forEach(team => {
                 let st = team.stats;
                 let dnfChance = (100 - st.motore) * 0.20; 
-                if(team.isPlayer) dnfChance *= 0.6; // Boost affidabilità giocatore
-
+                if(team.isPlayer) dnfChance *= 0.6; 
                 let isDnf = (Math.random() * 100) < dnfChance;
                 let pace = 0;
                 
                 if(!isDnf) {
                     let basePace = (st.pilota1 * 0.40) + (st.aerodinamica * 0.40) + (st.motore * 0.20);
-                    let stratMod = (st.strategia - 75) * 0.4; 
-                    pace = basePace + stratMod + (Math.random() * 15);
-                    if(team.isPlayer) {
-                        pace += 4.5 + meteoBonusPlayer; // Applica bonus meteo se esiste
-                    }
+                    pace = basePace + ((st.strategia - 75) * 0.4) + (Math.random() * 15);
+                    if(team.isPlayer) pace += 4.5 + bonusEventoPlayer; 
                 }
                 raceResults.push({ team: team, pace: pace, isDnf: isDnf });
             });
 
             raceResults.sort((a, b) => b.pace - a.pace);
-
-            let playerDnf = false, playerPos = 0, playerPtsGained = 0;
-            let validPos = 0;
+            let playerDnf = false, playerPos = 0, playerPtsGained = 0, validPos = 0;
             
             raceResults.forEach(res => {
                 if (!res.isDnf) {
-                    if (validPos < 10) {
-                        res.team.pts += pointsSystem[validPos];
-                        if(res.team.isPlayer) playerPtsGained = pointsSystem[validPos];
-                    }
+                    if (validPos < 10) { res.team.pts += pointsSystem[validPos]; if(res.team.isPlayer) playerPtsGained = pointsSystem[validPos]; }
                     if(res.team.isPlayer) playerPos = validPos + 1;
                     validPos++;
-                } else {
-                    if(res.team.isPlayer) { playerPos = "RIT"; playerDnf = true; }
-                }
+                } else { if(res.team.isPlayer) { playerPos = "RIT"; playerDnf = true; } }
             });
 
-            // Log Gara Giocatore
+            let t = dict[currentLang];
             let txt = "", css = "";
-            if (playerDnf) { txt = "RITIRO 💥 (+0)"; css = "dnf"; }
-            else if (playerPos === 1) { txt = "1° POSTO 🏆 (+25)"; css = "win"; }
-            else if (playerPos <= 3) { txt = playerPos + "° POSTO 🥈 (+"+playerPtsGained+")"; css = "podium"; }
-            else if (playerPos <= 10) { txt = playerPos + "° POSTO 🏎️ (+"+playerPtsGained+")"; css = "points"; }
-            else { txt = playerPos + "° POSTO 📉 (+0)"; css = ""; }
+            if (playerDnf) { txt = `${t.dnf} 💥 (+0)`; css = "dnf"; }
+            else if (playerPos === 1) { txt = `${t.p1} 🏆 (+25)`; css = "win"; }
+            else if (playerPos <= 3) { txt = `${playerPos}${t.p_pod} (+${playerPtsGained})`; css = "podium"; }
+            else if (playerPos <= 10) { txt = `${playerPos}${t.p_pts} (+${playerPtsGained})`; css = "points"; }
+            else { txt = `${playerPos}${t.p_out} (+0)`; css = ""; }
 
             const logBox = document.getElementById("race-log");
             logBox.innerHTML += `
                 <div class="race-row ${css}">
-                    <div>
-                        <span class="race-flag">${gp.flag} ${gp.gp}</span>
-                        ${meteoLogText}
-                    </div>
+                    <div><span class="race-flag">${gp.flag} ${gp.gp}</span>${logEventoText}</div>
                     <span class="race-result">${txt}</span>
                 </div>
             `;
             logBox.scrollTop = logBox.scrollHeight;
-            
             document.getElementById("pts-player").innerText = championship.find(t => t.isPlayer).pts;
 
-            // Reset Variabili Evento
-            meteoAttivo = false;
-            meteoBonusPlayer = 0;
-            meteoLogText = "";
-
+            eventoAttivo = false; bonusEventoPlayer = 0; logEventoText = "";
             garaIndex++;
-            if (garaIndex < calendario.length) {
-                simTimer = setTimeout(loopGare, 300);
-            } else {
-                mostraVerdetto(championship);
-            }
+            if (garaIndex < calendario.length) simTimer = setTimeout(loopGare, 300);
+            else mostraVerdetto(championship);
         }
 
         function mostraVerdetto(championship) {
             document.getElementById("final-standings").style.display = "block";
             championship.sort((a, b) => b.pts - a.pts);
-
             const tbody = document.getElementById("championship-body");
-            tbody.innerHTML = "";
-            let playerFinalRank = 0;
-
+            tbody.innerHTML = ""; let playerFinalRank = 0;
             championship.forEach((team, index) => {
                 let isPlayerClass = team.isPlayer ? "player-row" : "rival-row";
-                if(team.isPlayer) playerFinalRank = index + 1;
+                if(team.isPlayer) { playerFinalRank = index + 1; team.name = dict[currentLang].my_team; }
                 tbody.innerHTML += `<tr class="${isPlayerClass}"><td>${index + 1}</td><td>${team.name}</td><td>${team.pts}</td></tr>`;
             });
 
-            const title = document.getElementById("verdict-title");
-            const sub = document.getElementById("verdict-subtitle");
-            if (playerFinalRank === 1) {
-                title.innerText = "🏆 CAMPIONI DEL MONDO 🏆"; title.style.color = "#ffd700";
-                sub.innerText = "Manager dell'anno! Hai preso le decisioni giuste sotto pressione.";
-            } else if (playerFinalRank <= 3) {
-                title.innerText = "🥈 A UN PASSO DALLA GLORIA"; title.style.color = "#c0c0c0";
-                sub.innerText = "Grande stagione, ma quegli imprevisti a metà campionato pesano tantissimo.";
-            } else {
-                title.innerText = "🚜 STAGIONE FALLIMENTARE"; title.style.color = "#e10600";
-                sub.innerText = "Un disastro. Il CDA sta già stampando la tua lettera di licenziamento.";
-            }
+            const title = document.getElementById("verdict-title"), sub = document.getElementById("verdict-subtitle"), t = dict[currentLang];
+            if (playerFinalRank === 1) { title.innerText = t.v_win_t; title.style.color = "#ffd700"; sub.innerText = t.v_win_s; } 
+            else if (playerFinalRank <= 3) { title.innerText = t.v_pod_t; title.style.color = "#c0c0c0"; sub.innerText = t.v_pod_s; } 
+            else { title.innerText = t.v_los_t; title.style.color = "#e10600"; sub.innerText = t.v_los_s; }
         }
+
+        // Init base lang
+        setLang('it');
     </script>
 </body>
+</html>
