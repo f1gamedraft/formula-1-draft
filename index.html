@@ -91,7 +91,6 @@
         .slot-value { font-style: italic; color: #ccc; }
         .slot.filled .slot-value { color: #fff; font-style: normal; font-weight: bold; text-shadow: 0 1px 3px rgba(0,0,0,0.5); }
         
-        /* Grafica Simulazione */
         #simulation-area { display: none; margin-top: 30px; }
         
         .standings-header {
@@ -156,7 +155,7 @@
 
     <div class="game-container">
         <h1>🏁 F1 Mondiale Costruttori 🏁</h1>
-        <p>Sfida 9 scuderie storiche in una simulazione reale da 24 gare. Un mix equilibrato di piloti, auto e muretto è la chiave per il titolo.</p>
+        <p>Sfida la griglia in una simulazione da 24 gare. Ora le tue scelte da Manager faranno davvero la differenza in pista!</p>
         
         <div id="spinner">Premi "Pesca" per estrarre una scuderia!</div>
         <button id="spinBtn" onclick="spin()">🎲 Pesca Scuderia</button>
@@ -195,7 +194,6 @@
                         <tr><th>Pos</th><th>Scuderia</th><th>Punti</th></tr>
                     </thead>
                     <tbody id="championship-body">
-                        <!-- Generato dinamicamente -->
                     </tbody>
                 </table>
                 <p id="verdict-subtitle" style="margin-top: 15px; color: #ccc; font-style: italic;"></p>
@@ -245,12 +243,34 @@
             { name: "McLaren MP4/13 1998", d1: "M. Häkkinen", d2: "D. Coulthard", stats: { pilota1: 97, pilota2: 90, strategia: 92, aerodinamica: 98, motore: 98 } },
             { name: "Jordan 199 1999", d1: "H. Frentzen", d2: "D. Hill", stats: { pilota1: 94, pilota2: 82, strategia: 95, aerodinamica: 92, motore: 88 } },
 
-            // --- I PEGGIORI DISASTRI STORICI ---
+            // --- LE 20 NUOVE AUTO DISASTROSE E CATORCI STORICI ---
+            { name: "EuroBrun 1989", d1: "G. Foitek", d2: "O. Larrauri", stats: { pilota1: 55, pilota2: 50, strategia: 40, aerodinamica: 30, motore: 20 } },
+            { name: "Coloni 1990", d1: "B. Gachot", d2: "E. Chaves", stats: { pilota1: 60, pilota2: 50, strategia: 45, aerodinamica: 35, motore: 25 } },
+            { name: "Zakspeed 1989", d1: "B. Schneider", d2: "A. Suzuki", stats: { pilota1: 65, pilota2: 55, strategia: 40, aerodinamica: 40, motore: 30 } },
+            { name: "Fondmetal 1992", d1: "G. Tarquini", d2: "A. Chiesa", stats: { pilota1: 70, pilota2: 60, strategia: 50, aerodinamica: 45, motore: 40 } },
+            { name: "Pacific 1994", d1: "P. Belmondo", d2: "B. Gachot", stats: { pilota1: 55, pilota2: 65, strategia: 40, aerodinamica: 30, motore: 30 } },
+            { name: "Forti 1995", d1: "P. Diniz", d2: "R. Moreno", stats: { pilota1: 60, pilota2: 65, strategia: 50, aerodinamica: 45, motore: 40 } },
+            { name: "Minardi 1996", d1: "P. Lamy", d2: "G. Fisichella", stats: { pilota1: 75, pilota2: 80, strategia: 65, aerodinamica: 50, motore: 50 } },
+            { name: "Arrows 2002", d1: "H. Frentzen", d2: "E. Bernoldi", stats: { pilota1: 82, pilota2: 65, strategia: 50, aerodinamica: 60, motore: 45 } },
+            { name: "Super Aguri 2006", d1: "T. Sato", d2: "Y. Ide", stats: { pilota1: 75, pilota2: 20, strategia: 50, aerodinamica: 45, motore: 40 } },
+            { name: "Midland 2006", d1: "T. Monteiro", d2: "C. Albers", stats: { pilota1: 70, pilota2: 65, strategia: 55, aerodinamica: 55, motore: 60 } },
+            { name: "Spyker 2007", d1: "A. Sutil", d2: "C. Albers", stats: { pilota1: 75, pilota2: 60, strategia: 60, aerodinamica: 50, motore: 65 } },
+            { name: "Virgin 2010", d1: "T. Glock", d2: "L. Di Grassi", stats: { pilota1: 80, pilota2: 65, strategia: 50, aerodinamica: 45, motore: 50 } },
+            { name: "Lotus Racing 2010", d1: "J. Trulli", d2: "H. Kovalainen", stats: { pilota1: 80, pilota2: 75, strategia: 60, aerodinamica: 50, motore: 60 } },
+            { name: "Marussia 2012", d1: "T. Glock", d2: "C. Pic", stats: { pilota1: 78, pilota2: 68, strategia: 55, aerodinamica: 45, motore: 55 } },
+            { name: "Williams 2013", d1: "V. Bottas", d2: "P. Maldonado", stats: { pilota1: 80, pilota2: 75, strategia: 60, aerodinamica: 55, motore: 70 } },
+            { name: "Sauber 2014", d1: "A. Sutil", d2: "E. Gutierrez", stats: { pilota1: 75, pilota2: 65, strategia: 60, aerodinamica: 55, motore: 65 } },
+            { name: "Caterham 2014", d1: "K. Kobayashi", d2: "M. Ericsson", stats: { pilota1: 78, pilota2: 65, strategia: 55, aerodinamica: 40, motore: 50 } },
+            { name: "McLaren Honda 2017", d1: "F. Alonso", d2: "S. Vandoorne", stats: { pilota1: 95, pilota2: 75, strategia: 75, aerodinamica: 85, motore: 10 } }, // Il famoso disastro
+            { name: "Alfa Romeo 2021", d1: "K. Räikkönen", d2: "A. Giovinazzi", stats: { pilota1: 80, pilota2: 75, strategia: 70, aerodinamica: 65, motore: 75 } },
+            { name: "AlphaTauri 2023", d1: "Y. Tsunoda", d2: "N. De Vries", stats: { pilota1: 80, pilota2: 60, strategia: 70, aerodinamica: 65, motore: 80 } },
+
+            // --- I PEGGIORI DISASTRI (MALUS) ---
             { name: "Life L190 1990", d1: "B. Giacomelli", d2: "G. Brabham", stats: { pilota1: 60, pilota2: 50, strategia: 20, aerodinamica: 20, motore: 5 } },
             { name: "Andrea Moda 1992", d1: "R. Moreno", d2: "P. McCarthy", stats: { pilota1: 65, pilota2: 55, strategia: 10, aerodinamica: 20, motore: 30 } },
             { name: "Lola T97/30 1997", d1: "V. Sospiri", d2: "R. Rosset", stats: { pilota1: 60, pilota2: 50, strategia: 15, aerodinamica: 15, motore: 25 } },
 
-            // --- DAL 2000 IN POI ---
+            // --- DAL 2000 IN POI (DOMINATORI E MEDI) ---
             { name: "Ferrari 2000", d1: "M. Schumacher", d2: "R. Barrichello", stats: { pilota1: 99, pilota2: 88, strategia: 96, aerodinamica: 98, motore: 97 } },
             { name: "McLaren 2000", d1: "M. Häkkinen", d2: "D. Coulthard", stats: { pilota1: 96, pilota2: 89, strategia: 88, aerodinamica: 96, motore: 98 } },
             { name: "Williams BMW 2000", d1: "R. Schumacher", d2: "J. Button", stats: { pilota1: 86, pilota2: 78, strategia: 85, aerodinamica: 78, motore: 93 } },
@@ -299,7 +319,6 @@
             { name: "Ferrari 2014", d1: "F. Alonso", d2: "K. Räikkönen", stats: { pilota1: 94, pilota2: 78, strategia: 68, aerodinamica: 75, motore: 74 } },
             { name: "Mercedes 2015", d1: "L. Hamilton", d2: "N. Rosberg", stats: { pilota1: 98, pilota2: 92, strategia: 94, aerodinamica: 97, motore: 99 } },
             { name: "Ferrari 2015", d1: "S. Vettel", d2: "K. Räikkönen", stats: { pilota1: 95, pilota2: 82, strategia: 86, aerodinamica: 88, motore: 92 } },
-            { name: "McLaren Honda 2015", d1: "F. Alonso", d2: "J. Button", stats: { pilota1: 88, pilota2: 85, strategia: 70, aerodinamica: 80, motore: 50 } },
             { name: "Mercedes 2016", d1: "N. Rosberg", d2: "L. Hamilton", stats: { pilota1: 96, pilota2: 97, strategia: 90, aerodinamica: 98, motore: 99 } },
             { name: "Red Bull 2016", d1: "D. Ricciardo", d2: "M. Verstappen", stats: { pilota1: 93, pilota2: 92, strategia: 93, aerodinamica: 96, motore: 82 } },
             { name: "Ferrari 2016", d1: "S. Vettel", d2: "K. Räikkönen", stats: { pilota1: 88, pilota2: 85, strategia: 70, aerodinamica: 85, motore: 91 } },
@@ -413,7 +432,6 @@
             document.getElementById("live-standings").style.display = "flex";
             const logBox = document.getElementById("race-log");
             
-            // Creiamo un campionato da 10 scuderie
             let championship = [];
             championship.push({ id: 'player', name: 'IL TUO TEAM', pts: 0, stats: chosenStats, isPlayer: true });
             
@@ -432,39 +450,42 @@
             const intervalloGare = setInterval(() => {
                 const gp = calendario[garaIndex];
                 
-                // Simula performance per ogni team
                 let raceResults = [];
                 championship.forEach(team => {
                     let st = team.stats;
                     
-                    // Probabilità Ritiro bilanciata (motore a 90 = 2.5% dnf. motore a 50 = 12.5% dnf)
-                    let dnfChance = (100 - st.motore) * 0.25; 
+                    // Probabilità DNF Abbassata per renderlo più giocabile
+                    let dnfChance = (100 - st.motore) * 0.20; 
+                    
+                    // Il giocatore ha un boost resistenza (30% meno probabilità di DNF)
+                    if(team.isPlayer) {
+                        dnfChance = dnfChance * 0.7;
+                    }
+
                     let isDnf = (Math.random() * 100) < dnfChance;
                     
                     let pace = 0;
                     if(!isDnf) {
-                        // Pace base: enfasi su Prima Guida, Aerodinamica e Motore
                         let basePace = (st.pilota1 * 0.40) + (st.aerodinamica * 0.40) + (st.motore * 0.20);
-                        
-                        // Modificatore Strategia (Il muretto può farti guadagnare o perdere passo)
-                        let stratMod = (st.strategia - 80) * 0.3; 
-                        
-                        // Fattore Casuale Imprevedibile
+                        let stratMod = (st.strategia - 75) * 0.4; // Bonus più facile da prendere
                         let randomForm = Math.random() * 15; 
                         
                         pace = basePace + stratMod + randomForm;
+
+                        // Boost performance "Dream Team" al giocatore
+                        if(team.isPlayer) {
+                            pace += 4.5;
+                        }
                     }
                     raceResults.push({ team: team, pace: pace, isDnf: isDnf });
                 });
 
-                // Ordina dal più veloce al più lento
                 raceResults.sort((a, b) => b.pace - a.pace);
 
                 let playerDnf = false;
                 let playerPos = 0;
                 let playerPtsGained = 0;
 
-                // Assegna Punti e trova il giocatore
                 let validPos = 0;
                 raceResults.forEach(res => {
                     if (!res.isDnf) {
@@ -482,7 +503,6 @@
                     }
                 });
 
-                // Stampa Log Gara solo per il giocatore
                 let txt = "";
                 let css = "";
                 if (playerDnf) { txt = "RITIRO 💥 (+0)"; css = "dnf"; }
@@ -499,7 +519,6 @@
                 `;
                 logBox.scrollTop = logBox.scrollHeight;
                 
-                // Aggiorna Punteggi Live Giocatore
                 let playerObj = championship.find(t => t.isPlayer);
                 document.getElementById("pts-player").innerText = playerObj.pts;
 
@@ -516,7 +535,6 @@
             const standingsBox = document.getElementById("final-standings");
             standingsBox.style.display = "block";
             
-            // Ordina la classifica finale
             championship.sort((a, b) => b.pts - a.pts);
 
             const tbody = document.getElementById("championship-body");
@@ -543,17 +561,18 @@
             if (playerFinalRank === 1) {
                 title.innerText = "🏆 CAMPIONI DEL MONDO 🏆";
                 title.style.color = "#ffd700";
-                sub.innerText = "Straordinario! Hai dominato la classifica Costruttori battendo la storia!";
+                sub.innerText = "La strategia ha ripagato: hai sbaragliato i tuoi avversari!";
             } else if (playerFinalRank <= 3) {
                 title.innerText = "🥈 A UN PASSO DALLA GLORIA";
                 title.style.color = "#c0c0c0";
-                sub.innerText = "Ottima stagione, ma non è bastato per vincere il Titolo Mondiale.";
+                sub.innerText = "Ottima stagione, ma una piccola lacuna ti è costata il Titolo Mondiale.";
             } else {
                 title.innerText = "🚜 STAGIONE FALLIMENTARE";
                 title.style.color = "#e10600";
-                sub.innerText = "Vettura non competitiva o troppi ritiri. I tuoi rivali hanno passeggiato.";
+                sub.innerText = "Scelte pessime o troppi ritiri. C'è da rifare l'intera vettura.";
             }
         }
     </script>
 </body>
 </html>
+
