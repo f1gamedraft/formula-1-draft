@@ -175,86 +175,62 @@
 
     <script>
         // TRADUZIONI (i18n)
-        const dict = {
+                const dict = {
             it: {
-                main_title: "🏁 F1 Manager 24-0 🏁", main_sub: "Crea il tuo Dream Team! Hai a disposizione <strong>1 Jolly</strong> per scartare un'auto!",
-                spin_start: "Premi 'Pesca Scuderia' per iniziare!", btn_spin: "🎲 Pesca Scuderia", btn_jolly: "🔄 Usa Jolly",
-                slot1: "🏎️ 1° Pilota", slot2: "🏁 2° Pilota", slot3: "🎧 Muretto & Strat.", slot4: "💨 Aerodinamica", slot5: "⚙️ Motore & Affid.",
-                empty: "Vuoto", alert_assign: "Assegna la scuderia prima di pescare di nuovo!", alert_empty: "Hai finito le squadre!",
-                spin_jolly: "<em>Jolly utilizzato! Ripesco...</em>", spin_continue: "Premi <strong>'Pesca Scuderia'</strong> per continuare!",
-                select_slot: "SELEZIONA UNO SLOT", pilots: "PILOTI:", btn_sim: "🚦 Spegni i semafori!", live_pts: "I Tuoi Punti:",
-                final_title: "Classifica Finale Costruttori", th_pos: "Pos", th_team: "Scuderia", th_pts: "Punti", btn_replay: "🔄 Gioca di Nuovo",
-                upg_title: "🛠️ Pausa Estiva!", upg_desc: "Siamo a metà campionato. Dove investi gli aggiornamenti?", upg_aero: "💨 +5 Aerodinamica", upg_eng: "⚙️ +5 Motore", upg_strat: "🎧 +5 Strategia",
-                dnf: "RITIRO", p1: "1° POSTO", p_pod: "° POSTO 🥈", p_pts: "° POSTO 🏎️", p_out: "° POSTO 📉", my_team: "IL TUO TEAM",
-                v_win_t: "🏆 CAMPIONI DEL MONDO 🏆", v_win_s: "Manager dell'anno! Hai saputo reagire perfettamente sotto pressione.",
-                v_pod_t: "🥈 A UN PASSO DALLA GLORIA", v_pod_s: "Grande stagione, ma qualche imprevisto in pista ti ha fatto perdere punti chiave.",
-                v_los_t: "🚜 STAGIONE FALLIMENTARE", v_los_s: "Decisioni errate e catorci meccanici. Il CDA ha richiesto le tue dimissioni immediate.",
-                events: [
-                    { title: "🌧️ Diluvio Improvviso!", desc: "La pista è allagata. Decisione rapida!", b1: "🎧 Strategia Muretto", s1: "strategia", b2: "🏎️ 1° Pilota", s2: "pilota1", w: "Geniale sotto la pioggia! Vantaggio preso.", l: "Disastro sul bagnato! Affondiamo." },
-                    { title: "⚔️ Tensione nel Team!", desc: "I piloti lottano ruota a ruota. Chi favorisci?", b1: "🏎️ 1° Pilota", s1: "pilota1", b2: "🏁 2° Pilota", s2: "pilota2", w: "Ordine gestito bene, voliamo!", l: "Contatto! Danni e tempo perso ai box." },
-                    { title: "🔥 Allarme Motore!", desc: "Temperature al limite. Cosa fai in scia?", b1: "⚙️ Spingi al massimo", s1: "motore", b2: "🎧 Gestisci (Muretto)", s2: "strategia", w: "Azzardo ripagato! Bel sorpasso.", l: "Fumata bianca o crollo del passo." },
-                    { title: "💥 Detriti in pista!", desc: "Ala danneggiata. Rientri o resti fuori?", b1: "💨 Continua (Telaio)", s1: "aerodinamica", b2: "🎧 Box box (Strategia)", s2: "strategia", w: "Scelta perfetta. Nessun tempo perso.", l: "Scelta pessima. Bilanciamento distrutto." }
-                ]
+                main_title: "🏁 F1 Manager 24-0 🏁", main_sub: "Crea il tuo Team! Hai <strong>1 Reroll</strong> per cambiare auto.",
+                spin_start: "Premi 'Pesca Scuderia' per iniziare!", btn_spin: "🎲 Pesca Scuderia", btn_jolly: "🔄 Reroll",
+                slot1: "🏎️ 1° Pilota", slot2: "🏁 2° Pilota", slot3: "🎧 Muretto", slot4: "💨 Aerodinamica", slot5: "⚙️ Motore",
+                empty: "Vuoto", alert_assign: "Assegna l'auto prima di pescare!", alert_empty: "Nessuna auto rimasta!",
+                spin_jolly: "<em>Reroll usato! Cambio auto...</em>", spin_continue: "Premi <strong>'Pesca Scuderia'</strong> per continuare!",
+                select_slot: "SELEZIONA UNO SLOT", pilots: "PILOTI:", btn_sim: "🚦 Spegni i semafori!", live_pts: "Punti Team:",
+                final_title: "Classifica Costruttori", th_pos: "Pos", th_team: "Scuderia", th_pts: "Punti", btn_replay: "🔄 Gioca di Nuovo",
+                upg_title: "🛠️ Aggiornamenti!", upg_desc: "Pausa estiva! Dove investi?", upg_aero: "💨 +5 Aero", upg_eng: "⚙️ +5 Motore", upg_strat: "🎧 +5 Muretto",
+                dnf: "RITIRO", p1: "1°", p_pod: "°", p_pts: "°", p_out: "°", my_team: "IL TUO TEAM",
+                v_win_t: "🏆 CAMPIONI!", v_win_s: "Dominio totale. Il CDA è in festa.",
+                v_pod_t: "🥈 OTTIMA STAGIONE", v_pod_s: "Grande lavoro, ma il titolo è sfuggito per un soffio.",
+                v_los_t: "🚜 STAGIONE DA DIMENTICARE", v_los_s: "Troppi errori. Servono cambiamenti drastici."
             },
             en: {
-                main_title: "🏁 F1 Manager 24-0 🏁", main_sub: "Create your Dream Team! You have <strong>1 Joker</strong> to redraw a car!",
-                spin_start: "Press 'Draft Team' to start!", btn_spin: "🎲 Draft Team", btn_jolly: "🔄 Use Joker",
-                slot1: "🏎️ 1st Driver", slot2: "🏁 2nd Driver", slot3: "🎧 Pit Wall & Strat", slot4: "💨 Aerodynamics", slot5: "⚙️ Engine & Rel.",
-                empty: "Empty", alert_assign: "Assign the car before drawing again!", alert_empty: "No more teams!",
-                spin_jolly: "<em>Joker used! Redrawing...</em>", spin_continue: "Press <strong>'Draft Team'</strong> to continue!",
-                select_slot: "SELECT A SLOT", pilots: "DRIVERS:", btn_sim: "🚦 Lights Out!", live_pts: "Your Points:",
-                final_title: "Final Constructors' Standings", th_pos: "Pos", th_team: "Team", th_pts: "Pts", btn_replay: "🔄 Play Again",
-                upg_title: "🛠️ Summer Break!", upg_desc: "Halfway through the season. Where to invest?", upg_aero: "💨 +5 Aero", upg_eng: "⚙️ +5 Engine", upg_strat: "🎧 +5 Strategy",
-                dnf: "DNF", p1: "1st PLACE", p_pod: "nd/rd PLACE 🥈", p_pts: "th PLACE 🏎️", p_out: "th PLACE 📉", my_team: "YOUR TEAM",
-                v_win_t: "🏆 WORLD CHAMPIONS 🏆", v_win_s: "Manager of the year! Perfect decisions under pressure.",
-                v_pod_t: "🥈 SO CLOSE", v_pod_s: "Great season, but some unexpected events cost you key points.",
-                v_los_t: "🚜 TERRIBLE SEASON", v_los_s: "Bad decisions and awful cars. You're fired.",
-                events: [
-                    { title: "🌧️ Sudden Rain!", desc: "Track is flooding. Quick decision!", b1: "🎧 Pit Wall Call", s1: "strategia", b2: "🏎️ Trust 1st Driver", s2: "pilota1", w: "Genius in the rain! Huge advantage.", l: "Disaster in the wet! Sinking fast." },
-                    { title: "⚔️ Team Tension!", desc: "Drivers are wheel-to-wheel. Who do you favor?", b1: "🏎️ 1st Driver", s1: "pilota1", b2: "🏁 2nd Driver", s2: "pilota2", w: "Orders managed perfectly!", l: "Crash! Damage and lost time." },
-                    { title: "🔥 Engine Warning!", desc: "Temps are critical in the slipstream.", b1: "⚙️ Push to the limit", s1: "motore", b2: "🎧 Manage Pace", s2: "strategia", w: "Gamble pays off! Nice overtake.", l: "White smoke or pace drop." },
-                    { title: "💥 Debris!", desc: "Front wing damaged. Pit or stay out?", b1: "💨 Stay out (Aero)", s1: "aerodinamica", b2: "🎧 Box Box (Strategy)", s2: "strategia", w: "Perfect call. No time lost.", l: "Terrible choice. Balance ruined." }
-                ]
+                main_title: "🏁 F1 Manager 24-0 🏁", main_sub: "Create your Team! You have <strong>1 Reroll</strong> to redraw a car.",
+                spin_start: "Press 'Draft Team' to start!", btn_spin: "🎲 Draft Team", btn_jolly: "🔄 Reroll",
+                slot1: "🏎️ 1st Driver", slot2: "🏁 2nd Driver", slot3: "🎧 Pit Wall", slot4: "💨 Aerodynamics", slot5: "⚙️ Engine",
+                empty: "Empty", alert_assign: "Assign the car first!", alert_empty: "No teams left!",
+                spin_jolly: "<em>Reroll used! Redrawing...</em>", spin_continue: "Press <strong>'Draft Team'</strong> to continue!",
+                select_slot: "SELECT A SLOT", pilots: "DRIVERS:", btn_sim: "🚦 Lights Out!", live_pts: "Team Points:",
+                final_title: "Constructors' Standings", th_pos: "Pos", th_team: "Team", th_pts: "Pts", btn_replay: "🔄 Play Again",
+                upg_title: "🛠️ Upgrades!", upg_desc: "Summer break! Where to invest?", upg_aero: "💨 +5 Aero", upg_eng: "⚙️ +5 Engine", upg_strat: "🎧 +5 Pit Wall",
+                dnf: "DNF", p1: "1st", p_pod: "th", p_pts: "th", p_out: "th", my_team: "YOUR TEAM",
+                v_win_t: "🏆 CHAMPIONS!", v_win_s: "Total dominance. The board is thrilled.",
+                v_pod_t: "🥈 GREAT SEASON", v_pod_s: "Great effort, but the title slipped away.",
+                v_los_t: "🚜 FORGETTABLE SEASON", v_los_s: "Too many mistakes. Drastic changes needed."
             },
             es: {
-                main_title: "🏁 F1 Manager 24-0 🏁", main_sub: "¡Crea tu Dream Team! ¡Tienes <strong>1 Comodín</strong> para descartar un coche!",
-                spin_start: "¡Pulsa 'Robar Equipo' para empezar!", btn_spin: "🎲 Robar Equipo", btn_jolly: "🔄 Usar Comodín",
-                slot1: "🏎️ 1er Piloto", slot2: "🏁 2do Piloto", slot3: "🎧 Muro y Estrat.", slot4: "💨 Aerodinámica", slot5: "⚙️ Motor y Fiab.",
-                empty: "Vacío", alert_assign: "¡Asigna el coche antes de volver a robar!", alert_empty: "¡No quedan equipos!",
-                spin_jolly: "<em>¡Comodín usado! Robando...</em>", spin_continue: "¡Pulsa <strong>'Robar Equipo'</strong> para seguir!",
-                select_slot: "SELECCIONA UN ESPACIO", pilots: "PILOTOS:", btn_sim: "🚦 ¡Apaga el semáforo!", live_pts: "Tus Puntos:",
-                final_title: "Clasificación Final Constructores", th_pos: "Pos", th_team: "Escudería", th_pts: "Puntos", btn_replay: "🔄 Jugar de Nuevo",
-                upg_title: "🛠️ ¡Pausa de Verano!", upg_desc: "Mitad de temporada. ¿Dónde inviertes?", upg_aero: "💨 +5 Aero", upg_eng: "⚙️ +5 Motor", upg_strat: "🎧 +5 Estrategia",
-                dnf: "ABANDONO", p1: "1er PUESTO", p_pod: "º PUESTO 🥈", p_pts: "º PUESTO 🏎️", p_out: "º PUESTO 📉", my_team: "TU EQUIPO",
-                v_win_t: "🏆 CAMPEONES DEL MUNDO 🏆", v_win_s: "¡Mánager del año! Decisiones perfectas bajo presión.",
-                v_pod_t: "🥈 A UN PASO DE LA GLORIA", v_pod_s: "Gran temporada, pero algunos imprevistos costaron caro.",
-                v_los_t: "🚜 TEMPORADA DESASTROSA", v_los_s: "Malas decisiones y coches lentos. Estás despedido.",
-                events: [
-                    { title: "🌧️ ¡Lluvia Torrencial!", desc: "Pista inundada. ¡Decisión rápida!", b1: "🎧 Estrategia Muro", s1: "strategia", b2: "🏎️ Confiar 1er Piloto", s2: "pilota1", w: "¡Genial bajo la lluvia! Gran ventaja.", l: "¡Desastre en mojado! Nos hundimos." },
-                    { title: "⚔️ ¡Tensión en el equipo!", desc: "Pilotos rueda a rueda. ¿A quién favoreces?", b1: "🏎️ 1er Piloto", s1: "pilota1", b2: "🏁 2do Piloto", s2: "pilota2", w: "¡Órdenes perfectas, volamos!", l: "¡Toque! Daños y tiempo perdido." },
-                    { title: "🔥 ¡Alarma de Motor!", desc: "Temperaturas al límite. ¿Qué haces?", b1: "⚙️ Empujar al máximo", s1: "motore", b2: "🎧 Gestionar Ritmo", s2: "strategia", w: "¡Riesgo pagado! Gran adelantamiento.", l: "Humo blanco o pérdida de ritmo." },
-                    { title: "💥 ¡Escombros!", desc: "Alerón dañado. ¿Parar o seguir?", b1: "💨 Seguir en pista", s1: "aerodinamica", b2: "🎧 Box Box (Estrategia)", s2: "strategia", w: "Elección perfecta. Sin tiempo perdido.", l: "Pésima elección. Balance destruido." }
-                ]
+                main_title: "🏁 F1 Manager 24-0 🏁", main_sub: "¡Crea tu equipo! Tienes <strong>1 Reroll</strong> para cambiar de coche.",
+                spin_start: "¡Pulsa 'Robar' para empezar!", btn_spin: "🎲 Robar", btn_jolly: "🔄 Reroll",
+                slot1: "🏎️ 1er Piloto", slot2: "🏁 2do Piloto", slot3: "🎧 Estrategia", slot4: "💨 Aerodinámica", slot5: "⚙️ Motor",
+                empty: "Vacío", alert_assign: "¡Asigna el coche primero!", alert_empty: "¡No hay equipos!",
+                spin_jolly: "<em>¡Reroll usado! Cambiando...</em>", spin_continue: "¡Pulsa <strong>'Robar'</strong> para seguir!",
+                select_slot: "SELECCIONA UN ESPACIO", pilots: "PILOTOS:", btn_sim: "🚦 ¡Apaga el semáforo!", live_pts: "Puntos:",
+                final_title: "Clasificación Constructores", th_pos: "Pos", th_team: "Escudería", th_pts: "Puntos", btn_replay: "🔄 Jugar de nuevo",
+                upg_title: "🛠️ ¡Mejoras!", upg_desc: "¡Pausa de verano! ¿Dónde inviertes?", upg_aero: "💨 +5 Aero", upg_eng: "⚙️ +5 Motor", upg_strat: "🎧 +5 Estrategia",
+                dnf: "ABANDONO", p1: "1º", p_pod: "º", p_pts: "º", p_out: "º", my_team: "TU EQUIPO",
+                v_win_t: "🏆 ¡CAMPEONES!", v_win_s: "Dominio absoluto. La directiva está exultante.",
+                v_pod_t: "🥈 GRAN TEMPORADA", v_pod_s: "Buen trabajo, pero el título se escapó por poco.",
+                v_los_t: "🚜 TEMPORADA DESASTROSA", v_los_s: "Demasiados errores. Necesitas cambios drásticos."
             },
             fr: {
-                main_title: "🏁 F1 Manager 24-0 🏁", main_sub: "Créez votre Dream Team ! Vous avez <strong>1 Joker</strong> pour défausser une voiture !",
-                spin_start: "Appuyez sur 'Tirer Équipe' pour commencer!", btn_spin: "🎲 Tirer Équipe", btn_jolly: "🔄 Utiliser Joker",
-                slot1: "🏎️ 1er Pilote", slot2: "🏁 2ème Pilote", slot3: "🎧 Muret & Strat.", slot4: "💨 Aérodynamique", slot5: "⚙️ Moteur & Fiab.",
-                empty: "Vide", alert_assign: "Assignez la voiture avant de retirer!", alert_empty: "Plus d'équipes!",
-                spin_jolly: "<em>Joker utilisé ! Tirage...</em>", spin_continue: "Appuyez sur <strong>'Tirer Équipe'</strong> pour continuer!",
-                select_slot: "SÉLECTIONNEZ UNE PLACE", pilots: "PILOTES:", btn_sim: "🚦 Extinction des feux!", live_pts: "Vos Points:",
-                final_title: "Classement Final Constructeurs", th_pos: "Pos", th_team: "Écurie", th_pts: "Pts", btn_replay: "🔄 Rejouer",
-                upg_title: "🛠️ Pause Estivale !", upg_desc: "Mi-saison. Où investir les améliorations ?", upg_aero: "💨 +5 Aéro", upg_eng: "⚙️ +5 Moteur", upg_strat: "🎧 +5 Stratégie",
-                dnf: "ABANDON", p1: "1ère PLACE", p_pod: "e PLACE 🥈", p_pts: "e PLACE 🏎️", p_out: "e PLACE 📉", my_team: "VOTRE ÉQUIPE",
-                v_win_t: "🏆 CHAMPIONS DU MONDE 🏆", v_win_s: "Manager de l'année ! Décisions parfaites sous pression.",
-                v_pod_t: "🥈 SI PROCHE", v_pod_s: "Belle saison, mais des imprévus vous coûtent cher.",
-                v_los_t: "🚜 SAISON DÉSASTREUSE", v_los_s: "Mauvais choix et voitures lentes. Vous êtes viré.",
-                events: [
-                    { title: "🌧️ Pluie Soudaine !", desc: "Piste inondée. Décision rapide !", b1: "🎧 Stratégie Muret", s1: "strategia", b2: "🏎️ Confiance 1er Pilote", s2: "pilota1", w: "Génial sous la pluie ! Gros avantage.", l: "Désastre sur le mouillé ! On coule." },
-                    { title: "⚔️ Tension d'équipe !", desc: "Pilotes roue contre roue. Qui favoriser ?", b1: "🏎️ 1er Pilote", s1: "pilota1", b2: "🏁 2ème Pilote", s2: "pilota2", w: "Consignes parfaites, on vole !", l: "Accrochage ! Dégâts et temps perdu." },
-                    { title: "🔥 Alarme Moteur !", desc: "Températures critiques. Que faire ?", b1: "⚙️ Pousser à fond", s1: "motore", b2: "🎧 Gérer le rythme", s2: "strategia", w: "Pari gagnant ! Beau dépassement.", l: "Fumée blanche ou perte de rythme." },
-                    { title: "💥 Débris !", desc: "Aileron endommagé. Arrêt ou on continue ?", b1: "💨 Continuer (Aéro)", s1: "aerodinamica", b2: "🎧 Box Box (Stratégie)", s2: "strategia", w: "Choix parfait. Aucun temps perdu.", l: "Mauvais choix. Équilibre détruit." }
-                ]
+                main_title: "🏁 F1 Manager 24-0 🏁", main_sub: "Créez votre équipe ! Vous avez <strong>1 Reroll</strong> pour changer de voiture.",
+                spin_start: "Appuyez sur 'Tirer Écurie' !", btn_spin: "🎲 Tirer Écurie", btn_jolly: "🔄 Reroll",
+                slot1: "🏎️ 1er Pilote", slot2: "🏁 2ème Pilote", slot3: "🎧 Stratégie", slot4: "💨 Aéro", slot5: "⚙️ Moteur",
+                empty: "Vide", alert_assign: "Assignez la voiture d'abord !", alert_empty: "Plus d'écuries !",
+                spin_jolly: "<em>Reroll utilisé ! Tirage...</em>", spin_continue: "Appuyez sur <strong>'Tirer Écurie'</strong> pour continuer !",
+                select_slot: "CHOISISSEZ UNE PLACE", pilots: "PILOTES :", btn_sim: "🚦 Extinction des feux !", live_pts: "Points Équipe :",
+                final_title: "Classement Constructeurs", th_pos: "Pos", th_team: "Écurie", th_pts: "Pts", btn_replay: "🔄 Rejouer",
+                upg_title: "🛠️ Améliorations !", upg_desc: "Pause estivale ! Où investir ?", upg_aero: "💨 +5 Aéro", upg_eng: "⚙️ +5 Moteur", upg_strat: "🎧 +5 Stratégie",
+                dnf: "ABANDON", p1: "1ère", p_pod: "e", p_pts: "e", p_out: "e", my_team: "VOTRE ÉQUIPE",
+                v_win_t: "🏆 CHAMPIONS !", v_win_s: "Domination totale. L'écurie est aux anges.",
+                v_pod_t: "🥈 BELLE SAISON", v_pod_s: "Beau travail, mais le titre vous a échappé de peu.",
+                v_los_t: "🚜 SAISON À OUBLIER", v_los_s: "Trop d'erreurs. Des changements radicaux s'imposent."
             }
         };
 
